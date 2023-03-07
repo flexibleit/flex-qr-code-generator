@@ -20,31 +20,37 @@ if (!defined('FLEXQR_CODE_GENERATOR_URI')) {
 }
 // Register a function to be executed when the plugin is activated
 register_activation_hook( __FILE__, 'flexqr_code_generator_activate' );
-
-function flexqr_code_generator_activate() {
-  // Code to run when plugin is activated
+if (!function_exists('flexqr_code_generator_activate')) {
+  function flexqr_code_generator_activate() {
+    // Code to run when plugin is activated
+  }
 }
 
 // Register a function to be executed when the plugin is deactivated
 register_deactivation_hook( __FILE__, 'flexqr_code_generator_deactivate' );
-
+if (!function_exists('flexqr_code_generator_deactivate')) {
 function flexqr_code_generator_deactivate() {
   // Code to run when plugin is deactivated
 }
+}
 
-// Add an action hook to add a custom menu item in the WordPress admin area
-add_action( 'admin_menu', 'flexqr_code_generator_menu' );
-
+// Adding custom css and js for styling in the WordPress admin area
+if (!function_exists('flexqr_code_generator_scripts')) {
 function flexqr_code_generator_scripts() {
   wp_enqueue_style( 'flexqr-code-generator-style', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.css' );
   wp_enqueue_script( 'flexqr-code-generator-script', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.js', array( 'jquery' ) );
 }
-
-function flexqr_code_generator_menu() {
-  $page = add_options_page( 'QR Code Generator Options', 'QR Code Generator', 'manage_options', 'qr-code-generator', 'flexqr_code_generator_options' );
-  add_action( "admin_print_styles-{$page}", 'flexqr_code_generator_scripts' );
+}
+// Add an action hook to add a custom menu item in the WordPress admin area
+add_action( 'admin_menu', 'flexqr_code_generator_menu' );
+if (!function_exists('flexqr_code_generator_menu')){
+  function flexqr_code_generator_menu() {
+    $page = add_options_page( 'QR Code Generator Options', 'QR Code Generator', 'manage_options', 'qr-code-generator', 'flexqr_code_generator_options' );
+    add_action( "admin_print_styles-{$page}", 'flexqr_code_generator_scripts' );
+  }
 }
 
+if (!function_exists('flexqr_activate_code_generator_plugin')){
 function flexqr_activate_code_generator_plugin() {
    global $wpdb;
  
@@ -64,6 +70,7 @@ function flexqr_activate_code_generator_plugin() {
      require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
      dbDelta( $sql );
    }
+}
 }
  
  register_activation_hook( __FILE__, 'flexqr_activate_code_generator_plugin' );
