@@ -1,7 +1,7 @@
 <?php
 
 
-function display_qr_code_generator_form() {
+function flexqr_display_generator_form() {
    echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
    echo '<table><tr><td><label for="qr_code_text">Enter text to encode in QR code:</label></td>';
    echo '<td><textarea id="qr_code_text" name="qr_code_text" required></textarea></td></tr>';
@@ -46,7 +46,7 @@ function flexqr_code_generator_options() {
 
   echo '<h3>Create QR Code </h3>';
   echo '<p>Enter the text you want to convert into a QR code:</p>';
-  display_qr_code_generator_form();
+  flexqr_display_generator_form();
 
    flexqr_generate_qr_code();
 
@@ -67,9 +67,9 @@ function flexqr_code_generator_options() {
   // Loop through each QR code and display it in a table row
   foreach ( $qr_codes as $qr_code ) {
   echo '<tr>';
-  echo '<td>' . $qr_code->text . '</td>';
-  echo '<td><img width="50" src="' . $qr_code->qr_code_url . '" alt="QR code"></td>';
-  echo '<td><a href="' . $qr_code->qr_code_url . '" download="qrcode.png">Download</a></td>';
+  echo '<td>' . esc_html($qr_code->text) . '</td>';
+  echo '<td><img width="50" src="' . esc_html($qr_code->qr_code_url) . '" alt="QR code"></td>';
+  echo '<td><a href="' . esc_html($qr_code->qr_code_url) . '" download="qrcode.png">Download</a></td>';
   echo '</tr>';
   }
   
@@ -82,18 +82,18 @@ function flexqr_generate_qr_code() {
   global $wpdb;
 
   if ( isset( $_POST['qr_code_text'] ) && isset( $_POST['qr_code_color'] ) ) {
-    $qr_code_text = sanitize_text_field( $_POST['qr_code_text'] );
-    $qr_code_color = sanitize_text_field( $_POST['qr_code_color'] );
+    $qr_code_text = flexqr_valid_text( $_POST['qr_code_text'] );
+    $qr_code_color = flexqr_valid_text( $_POST['qr_code_color']);
     $qr_code_options='';
     if (!empty($qr_code_color )) {
       list($r, $g, $b) = sscanf($qr_code_color, "#%02x%02x%02x");
       $qr_code_options.= '&color='.$r.'-'. $g.'-'. $b;
     }
-    $qr_code_format = sanitize_text_field( $_POST['qr_code_format'] );
+    $qr_code_format = flexqr_valid_text( $_POST['qr_code_format'] );
     if (!empty($qr_code_format)) $qr_code_options.= '&format='.$qr_code_format;
-    $qr_code_size =  $_POST['qr_code_size'];
+    $qr_code_size =  flexqr_valid_text($_POST['qr_code_size']);
     if (!empty($qr_code_size)) $qr_code_options.= '&size='.$qr_code_size;
-    $qr_code_margin =  $_POST['qr_code_margin'];
+    $qr_code_margin =  flexqr_valid_text($_POST['qr_code_margin']);
     if (!empty($qr_code_margin)) $qr_code_options.= '&margin='.$qr_code_margin;
     // $qr_code_design = sanitize_text_field( $_POST['qr_code_design'] );
     // $qr_code_eye_style = sanitize_text_field( $_POST['qr_code_eye_style'] );
@@ -119,6 +119,6 @@ function flexqr_generate_qr_code() {
            echo print_r($wpdb->last_error);exit;
      }
      echo '<p>Your QR code has been generated:</p>';
-     echo '<img src="' . $qr_code_url . '" alt="QR code">';
+     echo '<img src="' . esc_html($qr_code_url) . '" alt="QR code">';
   }
 }
