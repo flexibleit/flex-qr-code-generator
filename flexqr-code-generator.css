@@ -1,0 +1,15 @@
+.flexqr-code-option{
+   margin: 5px;
+   cursor: pointer;
+   border: 2px solid transparent;
+}
+.flexqr-code-option.active{
+   border-color: rgb(31, 31, 180);
+}
+input#qr_code_color {
+   width: 50px;
+   border: 0px;
+   padding: 0px;
+   height: 40px;
+   background: transparent;
+}
