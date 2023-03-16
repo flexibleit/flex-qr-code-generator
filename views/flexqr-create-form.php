@@ -86,6 +86,7 @@ if (!function_exists('flexqr_generate_qr_code')) {
       if (!empty($qr_code_size)) $qr_code_options.= '&size='.$qr_code_size;
       $qr_code_margin =  flexqr_valid_input($_POST['qr_code_margin'], true);
       if (!empty($qr_code_margin)) $qr_code_options.= '&margin='.$qr_code_margin;
+      
       // $qr_code_design = sanitize_text_field( $_POST['qr_code_design'] );
       // $qr_code_eye_style = sanitize_text_field( $_POST['qr_code_eye_style'] );
       
