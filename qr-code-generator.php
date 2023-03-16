@@ -77,3 +77,5 @@ function flexqr_activate_code_generator_plugin() {
 
  include "inc/flexqr-helpers.php";
  include "views/flexqr-create-form.php";
+
+ 
