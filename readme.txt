@@ -2,17 +2,25 @@
 Tags: flex-qr-code-generator, qrcode, qrcodegenerator
 Requires at least: 4.6
 Tested up to: 6.1
-Stable tag: 1.0
+Stable tag: 1.1
 Requires PHP: 7.0 or later
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-
+== Description ==
 This is a simple plugin that allows you to generate QR codes on your WordPress website. You can select the color, design, and eye style for your QR codes and easily view and download all your created QR codes from the admin dashboard.
 
 ## Features
 - Easy-to-use interface for generating QR codes
 - Customize the color, design, and eye style of your QR codes
 - View and download all your created QR codes from the admin dashboard
+
+= Need Any Help? =
+* Please mail us at `flexibleit.net@gmail.com`
+* We provide live support
+
+== Screenshots ==
+1. The admin view of created QR Codes screenshot-1.jpg
+2. The QR Code Create form in admin screenshot-2.jpg
 
 ## Installation
 1. Login to your WordPress admin dashboard.
