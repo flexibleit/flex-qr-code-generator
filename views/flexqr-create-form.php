@@ -44,26 +44,49 @@ function flexqr_code_generator_options() {
   echo '<thead>';
   echo '<tr>';
   echo '<th>Text</th>';
-  echo '<th>QR Code</th>';
-  echo '<th>Download</th>';
+  echo '<th>QR Code</th><th>Actions</th>';
   echo '</tr>';
   echo '</thead>';
   echo '<tbody>';
-  
+  $per_page = 10; // Number of items to display per page
+  $page = !empty($_GET['paged']) ? absint($_GET['paged']) : 1; // Get current page number
+  // echo $_GET['page']." page ";
+  $offset = ($page - 1) * $per_page;
   // Query the database to retrieve all of the user's generated QR codes
-  $qr_codes = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "qr_codes order by id desc" );
+  $qr_codes = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."qr_codes LIMIT ".$per_page." OFFSET $offset");
+
+  $total_items = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."qr_codes");
+
+  $page_links = paginate_links(array(
+    'base' => add_query_arg('paged', '%#%'),
+    'format' => '',
+    'prev_text' => __('&laquo; Previous'),
+    'next_text' => __('Next &raquo;'),
+    'total' => ceil($total_items / $per_page),
+    'current' => $page
+  ));
+  
+  // $qr_codes = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "qr_codes order by id desc" );
   
   // Loop through each QR code and display it in a table row
   foreach ( $qr_codes as $qr_code ) {
-  echo '<tr>';
-  echo '<td>' . esc_html($qr_code->text) . '</td>';
-  echo '<td><img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code"></td>';
-  echo '<td><a href="' . esc_url($qr_code->qr_code_url) . '" download="qrcode.png">Download</a></td>';
+    // $date_created = date('Y-m-d H:i:s', strtotime($qr_code->date_created));
+    $edit_url = admin_url('admin.php?page=qrcode&action=edit&id=' . $qr_code->id);
+    $delete_url = wp_nonce_url(admin_url('admin-post.php?action=delete_qrcode&id=' . $qr_code->id), 'delete_qrcode');
+    echo '<tr>';
+    echo '<td>' . esc_html($qr_code->text) . '</td>';
+    echo '<td><img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code"></td>';
+  // echo '<td><div style="background-color:' . $color . '; width:20px; height:20px;"></div></td>';
+  // echo '<td><img src="' . $design . '" width="30" height="30"></td>';
+  // echo '<td><img src="' . $eye . '" width="20" height="20"></td>';
+  // echo '<td>' . esc_html($date_created) . '</td>';
+  echo '<td><a href="' . $edit_url . '">Edit</a> | <a href="' . $delete_url . '">Delete</a> | <a href="' . esc_url($qr_code->qr_code_url) . '" download="qrcode.png">Download</a></td>';
   echo '</tr>';
   }
   
   echo '</tbody>';
   echo '</table>';
+  echo '<div class="tablenav"><div class="tablenav-pages">' . $page_links . '</div></div>';
   echo '</div>';
 }
 }
