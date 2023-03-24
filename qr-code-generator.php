@@ -45,7 +45,7 @@ function flexqr_code_generator_scripts() {
 add_action( 'admin_menu', 'flexqr_code_generator_menu' );
 if (!function_exists('flexqr_code_generator_menu')){
   function flexqr_code_generator_menu() {
-    $page = add_options_page( 'QR Code Generator Options', 'QR Code Generator', 'manage_options', 'qr-code-generator', 'flexqr_code_generator_options' );
+    $page = add_options_page( 'QR Code Generator Options', 'QR Code Generator', 'manage_options', 'flexqr-code-generator', 'flexqr_code_generator_options' );
     add_action( "admin_print_styles-{$page}", 'flexqr_code_generator_scripts' );
   }
 }
@@ -72,7 +72,6 @@ function flexqr_activate_code_generator_plugin() {
    }
 }
 }
- 
  register_activation_hook( __FILE__, 'flexqr_activate_code_generator_plugin' );
 
  include "inc/flexqr-helpers.php";
