@@ -7,7 +7,7 @@
  * Author URI:  https://flexibleit.net
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version:     1.1
+ * Version:     1.1.1
  * Text Domain: flex-qr-code-generator
  *
  * @package flex-qr-code-generator

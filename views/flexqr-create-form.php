@@ -4,7 +4,7 @@ if (!function_exists('flexqr_display_generator_form')) {
   function flexqr_display_generator_form() {
     echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
     echo '<table><tr><td><label for="qr_code_text">Enter text to encode in QR code:</label></td>';
-    echo '<td><textarea id="qr_code_text" name="qr_code_text" required></textarea></td></tr>';
+    echo '<td><textarea id="qr_code_text" placeholder="text/url/anything" name="qr_code_text" required></textarea></td></tr>';
    //  echo '<br><br>';
     echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
    echo '<td><input type="color" id="qr_code_color" name="qr_code_color"></td></tr>';
@@ -66,7 +66,7 @@ function flexqr_code_generator_options() {
   echo '<thead>';
   echo '<tr>';
   echo '<th>Text</th>';
-  echo '<th>QR Code</th><th>Actions</th>';
+  echo '<th>QR Code</th><th>Shortcode</th><th>Actions</th>';
   echo '</tr>';
   echo '</thead>';
   echo '<tbody>';
@@ -93,11 +93,10 @@ function flexqr_code_generator_options() {
   // Loop through each QR code and display it in a table row
   foreach ( $qr_codes as $qr_code ) {
     // $date_created = date('Y-m-d H:i:s', strtotime($qr_code->date_created));
-    $edit_url = admin_url('admin.php?page=qrcode&action=edit&id=' . $qr_code->id);
-    $delete_url = wp_nonce_url(admin_url('admin.php?page=flexqr-code-generator&action=delete_qrcode&qrid=' . $qr_code->id), 'delete_qrcode');
     echo '<tr>';
     echo '<td>' . esc_html($qr_code->text) . '</td>';
     echo '<td><img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code"></td>';
+    echo '<td>[flexqr_code data-id="'.$qr_code->id.'" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
   // echo '<td><div style="background-color:' . $color . '; width:20px; height:20px;"></div></td>';
   // echo '<td><img src="' . $design . '" width="30" height="30"></td>';iuhn'uhjuokjhknm
   // echo '<td><img src="' . $eye . '" width="20" height="20"></td>';
