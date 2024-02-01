@@ -1,7 +1,7 @@
 # Flex QR Code Generator
 Tags: flex-qr-code-generator, qrcode, qrcodegenerator, flex qrcode generator, qrcode generator
 Requires at least: 4.6
-Tested up to: 6.1
+Tested up to: 6.4.3
 Stable tag: 1.1.2
 Requires PHP: 7.0 or later
 License: GPLv2 or later
