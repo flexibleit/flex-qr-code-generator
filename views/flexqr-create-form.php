@@ -3,8 +3,58 @@
 if (!function_exists('flexqr_display_generator_form')) {
   function flexqr_display_generator_form() {
     echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
-    echo '<table><tr><td><label for="qr_code_text">Enter text to encode in QR code:</label></td>';
-    echo '<td><textarea id="qr_code_text" placeholder="text/url/anything" name="qr_code_text" required></textarea></td></tr>';
+    echo '<table><tr><td><label for="flexqrcode_code_text">Enter text to encode in QR code:</label></td>';  
+    echo '<td>
+    <textarea id="flexqrcode_code_text" placeholder="text/url/anything"  name="qr_code_text" required></textarea>
+  </td>
+  <td>
+    <select id="flexqrcode_select_page_option" name="qr_code_input">
+      <option value="">Select</option>
+      <option value="page">page</option>
+      <option value="post">post</option>
+      <option value="product">product</option>
+    </select>
+  </td>
+  <td id="flexqrcode_input_page">
+  <select name="page-dropdown">
+      <option value="">' . esc_attr( __( 'Select page' ) ) . '</option>';
+      
+    $pages = get_pages();
+    foreach ( $pages as $page ) {
+    echo '<option value="' . get_page_link( $page->ID ) . '">' . $page->post_title . '</option>';
+    }
+
+    echo '</select>
+    </td>
+    <td id="flexqrcode_input_post">
+    <select name="page-dropdown">
+      <option value="">' . esc_attr( __( 'Select Posts' ) ) . '</option>';
+      
+    $posts = get_posts();
+    foreach ( $posts as $post ) {
+    echo '<option value="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</option>';
+    }
+    echo '</select>
+    </td>
+    <td id="flexqrcode_input_product">
+    <select name="page-dropdown">
+      <option value="">' . esc_attr( __( 'Select Product' ) ) . '</option>';
+      $args = array(
+
+        'limit' => 10,
+        'orderby' => 'date',
+        'order' => 'DESC'
+    
+    );
+    $products = wc_get_products($args);
+    foreach ( $products as $product ) {
+    echo '<option value="' .  $product->get_id()  . '">' . $product->get_name() . '</option>';
+    }
+    echo '</select>
+    </td>
+</tr>';
+
+
    //  echo '<br><br>';
     echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
    echo '<td><input type="color" id="qr_code_color" name="qr_code_color"></td></tr>';
@@ -24,6 +74,7 @@ if (!function_exists('flexqr_display_generator_form')) {
    echo '</form>';
  }
 }
+
 if (!function_exists('flexqr_delete_qr')) {
   function flexqr_delete_qr() {
     global $wpdb;

@@ -60,3 +60,5 @@ If you want to contribute to the development of the plugin, you can submit a pul
 - Add shortcode to show the shortcode easily
 - Add Delete shortcode options
 - Add pagination in the shortcodes table
+### 1.1.2
+- Add automatic page/post/product url selection
