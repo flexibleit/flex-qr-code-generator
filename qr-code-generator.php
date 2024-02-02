@@ -3,7 +3,7 @@
  * Plugin Name: Flex QR Code Generator
  * Description: A simple wordpress plugin to generate and manage QR codes in WordPress.
  * Plugin URI:  https://github.com/flexibleit/flex-qr-code-generator
- * Author:      Ajit Das
+ * Author:      Devsbrain
  * Author URI:  https://devsbrain.com
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
