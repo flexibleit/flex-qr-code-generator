@@ -48,7 +48,7 @@ if (!function_exists('flexqr_display_generator_form')) {
     );
     $products = wc_get_products($args);
     foreach ( $products as $product ) {
-    echo '<option value="' .  $product->get_id()  . '">' . $product->get_name() . '</option>';
+    echo '<option value="' .  get_permalink( $product->get_id() ) . '">' . $product->get_name() . '</option>';
     }
     echo '</select>
     </td>
