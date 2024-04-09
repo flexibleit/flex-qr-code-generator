@@ -11,9 +11,11 @@ if (!function_exists('flexqr_display_generator_form')) {
     <select id="flexqrcode_select_page_option" name="qr_code_input">
       <option value="">Select</option>
       <option value="page">page</option>
-      <option value="post">post</option>
-      <option value="product">product</option>
-    </select>
+      <option value="post">post</option>';
+      if (function_exists('wc_get_products')) {
+        echo '<option value="product">product</option>';
+      }
+      echo' </select>
   </td>
   <td id="flexqrcode_input_page">
   <select name="page-dropdown">
@@ -46,9 +48,11 @@ if (!function_exists('flexqr_display_generator_form')) {
         'order' => 'DESC'
     
     );
+    if (function_exists('wc_get_products')) {
     $products = wc_get_products($args);
     foreach ( $products as $product ) {
     echo '<option value="' .  get_permalink( $product->get_id() ) . '">' . $product->get_name() . '</option>';
+    }
     }
     echo '</select>
     </td>
