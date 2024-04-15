@@ -5,10 +5,10 @@ if (!function_exists('flexqr_display_generator_form')) {
     echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
     echo '<table><tr><td><label for="flexqrcode_code_text">Enter text to encode in QR code:</label></td>';  
     echo '<td>
-    <textarea id="flexqrcode_code_text" placeholder="text/url/anything"  name="qr_code_text" required></textarea>
+    <textarea id="flexqrcode_code_text" placeholder="text/url/anything"  name="qr_code_text" required style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></textarea>
   </td>
   <td>
-    <select id="flexqrcode_select_page_option" name="qr_code_input">
+    <select id="flexqrcode_select_page_option" name="qr_code_input" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;">
       <option value="">Select</option>
       <option value="page">page</option>
       <option value="post">post</option>';
@@ -18,7 +18,7 @@ if (!function_exists('flexqr_display_generator_form')) {
       echo' </select>
   </td>
   <td id="flexqrcode_input_page">
-  <select name="page-dropdown">
+  <select name="page-dropdown" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;">
       <option value="">' . esc_attr( __( 'Select page' ) ) . '</option>';
       
     $pages = get_pages();
@@ -29,7 +29,7 @@ if (!function_exists('flexqr_display_generator_form')) {
     echo '</select>
     </td>
     <td id="flexqrcode_input_post">
-    <select name="page-dropdown">
+    <select name="page-dropdown" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;">
       <option value="">' . esc_attr( __( 'Select Posts' ) ) . '</option>';
       
     $posts = get_posts();
@@ -39,7 +39,7 @@ if (!function_exists('flexqr_display_generator_form')) {
     echo '</select>
     </td>
     <td id="flexqrcode_input_product">
-    <select name="page-dropdown">
+    <select name="page-dropdown" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;">
       <option value="">' . esc_attr( __( 'Select Product' ) ) . '</option>';
       $args = array(
 
@@ -61,11 +61,11 @@ if (!function_exists('flexqr_display_generator_form')) {
 
    //  echo '<br><br>';
     echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
-   echo '<td><input type="color" id="qr_code_color" name="qr_code_color"></td></tr>';
+   echo '<td><input type="color" id="qr_code_color" name="qr_code_color" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
    echo '<tr><td><label for="qr_code_size">Size(150 X 150):</label></td>';
-   echo '<td><input type="number" id="qr_code_size" name="qr_code_size"></td></tr>';
+   echo '<td><input type="number" id="qr_code_size" name="qr_code_size" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
    echo '<tr><td><label for="qr_code_format">QR Format:</label></td>';
-   echo '<td><select id="qr_code_format" name="qr_code_format">
+   echo '<td><select id="qr_code_format" name="qr_code_format" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;">
    <option value="png">png</option>
    <option value="gif">gif</option>
    <option value="jpg">jpg</option>
@@ -73,8 +73,8 @@ if (!function_exists('flexqr_display_generator_form')) {
    <option value="eps">eps</option>
    </select></td></tr>';
    echo '<tr><td><label for="qr_code_margin">Margin:</label></td>';
-   echo '<td><input type="number" id="qr_code_margin" name="qr_code_margin"></td></tr>';
-   echo '<tr><td colspan="2"><input type="submit" class="button button-primary" value="Generate QR Code"></td></tr></table>';
+   echo '<td><input type="number" id="qr_code_margin" name="qr_code_margin" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
+   echo '<tr><td colspan="2"><input type="submit" class="button button-primary" style="padding: 7px 20px; margin: 8px 0;" value="Generate QR Code"></td></tr></table>';
    echo '</form>';
  }
 }

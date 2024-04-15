@@ -51,18 +51,13 @@ if (!function_exists('flexqr_code_generator_menu')){
 
     add_menu_page('QR Code Generator Options', 'QR Code', 'manage_options', 'flexqr-code-generator', 'flexqr_code_generator_options', 'dashicons-screenoptions' );
 
-    // add_submenu_page('flexqr-code-generator', 'Settings', 'Setting ', 'manage_options', 'flexqr-code-settings', 'flexqr_code_settings');
+    add_submenu_page('flexqr-code-generator', 'Settings', 'Setting ', 'manage_options', 'flexqr-code-settings', 'flexqr_code_settings');
 
     $page = add_options_page( 'QR Code Generator Options', 'QR Code Generator', 'manage_options', 'flexqr-code-generator', 'flexqr_code_generator_options' );
     add_action( "admin_print_styles-{$page}", 'flexqr_code_generator_scripts' );
   }
 }
 
-// if (!function_exists('flexqr_code_settings')){
-//   function flexqr_code_settings() {
-    
-//   }
-// }
 
 
 if (!function_exists('flexqr_activate_code_generator_plugin')){
@@ -91,6 +86,7 @@ function flexqr_activate_code_generator_plugin() {
 
  include "inc/flexqr-helpers.php";
  include "inc/flexqr-metabox.php";
+ include "inc/flexqr-settings.php";
  include "views/flexqr-create-form.php";
 
  
