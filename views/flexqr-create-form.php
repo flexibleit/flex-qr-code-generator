@@ -105,10 +105,11 @@ function flexqr_code_generator_options() {
   global $wpdb;
   flexqr_delete_qr();
   
-
   // Display the plugin options page
   echo '<div class="wrap">';
-  echo '<h2>QR Code Generator </h2>';
+  echo '<div style="display:flex; align-items:center; background:#273476; padding:15px; margin-top:12px; border-radius: 5px" >
+          <h2 style="color:white; ">FlexQR Code Generator</h2>
+        </div>';
 
   echo '<h3>Create QR Code </h3>';
   echo '<p>Enter the text you want to convert into a QR code:</p>';
