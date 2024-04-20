@@ -7,9 +7,23 @@
    border-color: rgb(31, 31, 180);
 }
 input#qr_code_color {
-   width: 50px;
    border: 0px;
    padding: 0px;
-   height: 40px;
+   margin: 0px;
+   width: 60px;
+   height: 60px;
    background: transparent;
+}
+.flex-qr-code-top-header {
+   display:flex; align-items:center; background:#273476; padding:15px; margin-top:12px; border-radius: 5px;
+}
+.flex-qr-code-top-header h2{
+   color: white;
+   font-size: 24px;
+   margin: 0;
+   padding: 10px;
+}
+.flex-qr-code-form h3 {
+   font-size: 22px;
+   margin-bottom: 10px;
 }

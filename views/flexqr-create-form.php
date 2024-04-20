@@ -61,7 +61,7 @@ if (!function_exists('flexqr_display_generator_form')) {
 
    //  echo '<br><br>';
     echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
-   echo '<td><input type="color" id="qr_code_color" name="qr_code_color" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
+   echo '<td><input type="color" id="qr_code_color" name="qr_code_color" style=" display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; "></td></tr>';
    echo '<tr><td><label for="qr_code_size">Size(150 X 150):</label></td>';
    echo '<td><input type="number" id="qr_code_size" name="qr_code_size" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
    echo '<tr><td><label for="qr_code_format">QR Format:</label></td>';
@@ -106,17 +106,17 @@ function flexqr_code_generator_options() {
   flexqr_delete_qr();
   
   // Display the plugin options page
-  echo '<div class="wrap">';
-  echo '<div style="display:flex; align-items:center; background:#273476; padding:15px; margin-top:12px; border-radius: 5px" >
+  echo '<div class=" wrap">';
+  echo '<div class="flex-qr-code-top-header" >
           <h2 style="color:white; ">FlexQR Code Generator</h2>
         </div>';
 
-  echo '<h3>Create QR Code </h3>';
-  echo '<p>Enter the text you want to convert into a QR code:</p>';
+  echo '<div class="flex-qr-code-form"><h3>Create QR Code </h3>';
+  echo '<p>You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own.</p>';
   flexqr_display_generator_form();
   flexqr_generate_qr_code();
 
-
+  echo '</div>';
   echo '<h3>Your QR Codes</h3>';
   echo '<table class="wp-list-table widefat fixed striped posts">';
   echo '<thead>';

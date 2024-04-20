@@ -49,7 +49,7 @@ add_action( 'admin_menu', 'flexqr_code_generator_menu' );
 if (!function_exists('flexqr_code_generator_menu')){
   function flexqr_code_generator_menu() {
 
-    add_menu_page('QR Code Generator Options', 'QR Code', 'manage_options', 'flexqr-code-generator', 'flexqr_code_generator_options', 'dashicons-screenoptions' );
+    add_menu_page('QR Code Generator Options', 'Flex QR Code', 'manage_options', 'flexqr-code-generator', 'flexqr_code_generator_options', 'dashicons-screenoptions' );
 
     add_submenu_page('flexqr-code-generator', 'Settings', 'Setting ', 'manage_options', 'flexqr-code-settings', 'flexqr_code_settings');
 
