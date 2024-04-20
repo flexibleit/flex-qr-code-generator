@@ -23,6 +23,10 @@ input#qr_code_color {
    margin: 0;
    padding: 10px;
 }
+.flex-qr-code-top-header a{
+   color: #fff;
+   font-size: 18px;
+}
 .flex-qr-code-form h3 {
    font-size: 22px;
    margin-bottom: 10px;
