@@ -107,9 +107,7 @@ function flexqr_code_generator_options() {
   
   // Display the plugin options page
   echo '<div class=" wrap">';
-  echo '<div class="flex-qr-code-top-header" >
-          <h2>FlexQR Code Generator</h2> - <a href="https://devsbrain.com">by DevsBrain</a>
-        </div>';
+  include_once "flexqr-top-header.php";
 
   echo '<div class="flex-qr-code-form"><h3>Create QR Code </h3>';
   echo '<p>You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own.</p>';

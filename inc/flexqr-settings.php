@@ -14,9 +14,7 @@ if (!function_exists('flexqr_code_settings')){
         ) );
         ?>
         <div class='wrap'>
-            <div style="display:flex; align-items:center; background:#273476; padding:15px; margin-top:12px; border-radius: 5px" >
-            <h2 style="color:white; ">FlexQR Code Generator</h2>
-            </div>
+            <?php include_once FLEXQR_CODE_GENERATOR_PATH."views/flexqr-top-header.php"; ?>
             <form method="post" action="">
                 <table style='border-collapse: collapse; width: 18%;'>
                     <tr>
