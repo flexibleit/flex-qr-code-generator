@@ -3,7 +3,7 @@ Tags: qrcode, qrcodegenerator, qrcode generator, qr code, dynamic qr code
 Requires at least: 4.6
 Tested up to: 6.4.3
 Stable tag: 1.1.3
-Requires PHP: 7.4 or later
+Requires PHP: 7.2.2 or later
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 == Short Description ==
@@ -50,7 +50,7 @@ This is a simple plugin that allows you to generate QR codes on your WordPress w
 
 ## Requirements
 - WordPress 4.0 or higher
-- PHP 7.0 or higher
+- PHP 7.2.2 or higher
 
 ## License
 This plugin is licensed under the GPLv2 (or later) license.
