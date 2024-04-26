@@ -5,12 +5,13 @@ Tested up to: 6.4.3
 Stable tag: 1.1.3
 Requires PHP: 7.2.2 or later
 License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-== Short Description ==
-This is a simple plugin that allows you to generate QR codes on your WordPress website and show the qrcode with shortcode. 
+License URI: https://www.gnu.org/licenses/gpl-2.0.html 
 
 == Description ==
 This is a simple plugin that allows you to generate QR codes on your WordPress website and show the qrcode with shortcode. You can select the color, design, and eye style for your QR codes and easily view and download all your created QR codes from the admin dashboard. You can copy the shortcode and show it anywhere you want to show it.
+
+== Short Description ==
+A simple plugin that allows you to generate QR codes on your WordPress website and show the qrcode with shortcode.
 
 ## Features
 - Easy-to-use interface for generating QR codes
