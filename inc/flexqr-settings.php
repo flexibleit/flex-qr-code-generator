@@ -16,14 +16,14 @@ if (!function_exists('flexqr_code_settings')){
         <div class='wrap'>
             <?php include_once FLEXQR_CODE_GENERATOR_PATH."views/flexqr-top-header.php"; ?>
             <form method="post" action="">
-                <table style='border-collapse: collapse; width: 18%;'>
+                <table style='border-collapse: collapse;'>
                     <tr>
                         <td style='padding: 15px 0; text-align: left;'><input type="checkbox" name="content" value="1" <?php checked( $flexqr_settings['content'], '1' ); ?>></td>
-                        <td style='padding: 15px 0; text-align: left;'><label for="content" style="font-size: 15px; font-weight: 500;">Show QrCode Content in posts & pages</label></td>
+                        <td colspan="3" style='padding: 15px 0; text-align: left; padding-left:10px;'><label for="content" style="font-size: 15px; font-weight: 500;">Show QrCode Content in posts & pages</label><p style="margin: 0;">This options will show a post metaboxes in the post edit page. Where it will show the QR code and the short code.</p></td>
                     </tr>
                     <tr>
                         <td style='padding: 15px 0; text-align: left;'><input type="checkbox" name="download_button" value="1" <?php checked( $flexqr_settings['download_button'], '1' ); ?>></td>
-                        <td style='padding: 15px 0; text-align: left;'><label for="download_button" style="font-size: 15px; font-weight: 500;">Show QrCode download button</label></td>
+                        <td colspan="3" style='padding: 15px 0; text-align: left; padding-left: 10px;'><label for="download_button" style="font-size: 15px; font-weight: 500;">Show QrCode download button</label><p style="margin: 0;">This options will show a download button in post metaboxes of the post edit page. Where you can download the QR code easily.</p></td>
                     </tr>
                 </table>
                 <?php wp_nonce_field( 'flexqr_nonce_action', 'flexqr_nonce' ); ?>

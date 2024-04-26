@@ -24,6 +24,8 @@ This is a simple plugin that allows you to generate QR codes on your WordPress w
 2. The QR Code Create form in admin screenshot-2.jpg
 3. Show QR code with shortcode in the post sidebar screenshot-3.png 
 4. Show QR code with shortcode in product page screenshot-4.png
+5. Show Flex QR Code settings page screenshot-05.png
+6. Show post metabox for Flex QR code with shortcode screenshot-06.png
 
 ## Installation
 1. Login to your WordPress admin dashboard.
@@ -40,6 +42,8 @@ This is a simple plugin that allows you to generate QR codes on your WordPress w
 4. Click on the "Generate QR Code" button.
 5. View and download all your created QR codes from the QR Code > QR Codes page.
 6. Copy the shortcode and show it in any places where you want
+7. You can enable post metabox for any posts from settings
+8. Go to Edit post and can see the meta box with QR code and shortcode. You can download QR code from there
 
 ## Requirements
 - WordPress 4.0 or higher
@@ -63,3 +67,6 @@ If you want to contribute to the development of the plugin, you can submit a pul
 - Add pagination in the shortcodes table
 ### 1.1.2
 - Add automatic page/post/product url selection
+### 1.1.3
+- Add post metabox for generating QR code and shortcode for that posts
+- Settings page added for showing post metabox and qrcode download button
