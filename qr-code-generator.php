@@ -7,7 +7,7 @@
  * Author URI:  https://devsbrain.com
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version:     1.1.4
+ * Version:     1.2
  * Text Domain: flex-qr-code-generator
  *
  * @package flex-qr-code-generator
@@ -54,6 +54,8 @@ if (!function_exists('flexqr_code_generator_menu')){
 
     add_submenu_page('flexqr-code-generator', 'Settings', 'Setting ', 'manage_options', 'flexqr-code-settings', 'flexqr_code_settings');
 
+    // add_submenu_page('flexqr-code-generator', 'Tracking', 'Tracking ', 'manage_options', 'flexqr-code-tracking', 'flexqr_code_tracking');
+
     // $page = add_options_page( 'QR Code Generator Options', 'QR Code Generator', 'manage_options', 'flexqr-code-generator', 'flexqr_code_generator_options' );
     // add_action( "admin_print_styles-{$page}", 'flexqr_code_generator_scripts' );
   }
@@ -78,17 +80,19 @@ function flexqr_activate_code_generator_plugin() {
        qr_code_url varchar(355) DEFAULT '' NOT NULL,
        PRIMARY KEY  (id)
      ) $charset_collate;";
- 
+      
      require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
      dbDelta( $sql );
    }
-}
+  }
 }
  register_activation_hook( __FILE__, 'flexqr_activate_code_generator_plugin' );
 
  include "inc/flexqr-helpers.php";
  include "inc/flexqr-metabox.php";
  include "inc/flexqr-settings.php";
+ include "inc/flexqr-track.php";
  include "views/flexqr-create-form.php";
-
+ // Alter database
+ include "inc/flexqr-database.php";
  
