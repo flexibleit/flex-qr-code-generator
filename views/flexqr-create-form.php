@@ -149,8 +149,18 @@ function flexqr_code_generator_options() {
     // $date_created = date('Y-m-d H:i:s', strtotime($qr_code->date_created));
     echo '<tr>';
     echo '<td>' . esc_html($qr_code->text) . '</td>';
-    echo '<td><img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code"></td>';
-    echo '<td>[flexqr_code data-id="'.$qr_code->id.'" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
+    echo '<td>';
+    if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
+        echo '<img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code">';
+    } else {
+        echo do_shortcode('[flexqr_code url="'.$qr_code->qr_code_url.'" size="50" bgcolor="#ffffff" padding="5px" margin="5px"]');
+    }
+    echo '</td>';
+    if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
+      echo '<td>[flexqr_code data-id="'.$qr_code->id.'" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
+    } else {
+      echo '<td>[flexqr_code url="'.$qr_code->qr_code_url.'" size="155"]</td>';
+    }
   // echo '<td><div style="background-color:' . $color . '; width:20px; height:20px;"></div></td>';
   // echo '<td><img src="' . $design . '" width="30" height="30"></td>';iuhn'uhjuokjhknm
   // echo '<td><img src="' . $eye . '" width="20" height="20"></td>';
