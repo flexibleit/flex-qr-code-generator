@@ -145,7 +145,7 @@ function flexqr_code_generator_options() {
   // $qr_codes = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "qr_codes order by id desc" );
   
   // Loop through each QR code and display it in a table row
-  foreach ( $qr_codes as $qr_code ) {
+  foreach ($qr_codes as $qr_code) {
     // $date_created = date('Y-m-d H:i:s', strtotime($qr_code->date_created));
     echo '<tr>';
     echo '<td>' . esc_html($qr_code->text) . '</td>';
@@ -153,31 +153,40 @@ function flexqr_code_generator_options() {
     if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
         echo '<img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code">';
     } else {
-        echo do_shortcode('[flexqr_code url="'.$qr_code->qr_code_url.'" size="50" bgcolor="#ffffff" padding="5px" margin="5px"]');
+        echo do_shortcode('[flexqr_code url="' . esc_url($qr_code->qr_code_url) . '" size="50" bgcolor="#ffffff" padding="5px" margin="5px"]');
     }
     echo '</td>';
     if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
-      echo '<td>[flexqr_code data-id="'.$qr_code->id.'" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
+        echo '<td>[flexqr_code data-id="' . esc_html($qr_code->id) . '" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
     } else {
-      echo '<td>[flexqr_code url="'.$qr_code->qr_code_url.'" size="155"]</td>';
+        echo '<td>[flexqr_code url="' . esc_url($qr_code->qr_code_url) . '" size="155"]</td>';
     }
-  // echo '<td><div style="background-color:' . $color . '; width:20px; height:20px;"></div></td>';
-  // echo '<td><img src="' . $design . '" width="30" height="30"></td>';iuhn'uhjuokjhknm
-  // echo '<td><img src="' . $eye . '" width="20" height="20"></td>';
-  // echo '<td>' . esc_html($date_created) . '</td>';
-  $confirm_msg = "'are you sure?'";
-  echo '<td> <form style="display: inline-block;" method="post" action="">
-  <input type="hidden" name="qrid" value="'. esc_html($qr_code->id).'" />
-  <input type="hidden" name="action" value="delete_qrcode" />
-  <button style="border:none;background:none;color:#2371b1;" onclick="return confirm('.$confirm_msg.')" type="submit">Delete</button>
-</form> | <a href="' . esc_url($qr_code->qr_code_url) . '" download="qrcode.png">Download</a></td>';
-  echo '</tr>';
-  }
-  
-  echo '</tbody>';
-  echo '</table>';
-  echo '<div class="tablenav"><div class="tablenav-pages">' . $page_links . '</div></div>';
-  echo '</div>';
+
+    // Extract the ID from the qr_code_url
+    $url_components = parse_url($qr_code->qr_code_url);
+    parse_str($url_components['query'], $params);
+    $qr_id = isset($params['id']) ? intval($params['id']) : 0;
+
+    $confirm_msg = "'are you sure?'";
+    echo '<td>
+      <form style="display: inline-block;" method="post" action="">
+        <input type="hidden" name="qrid" value="' . esc_html($qr_code->id) . '" />
+        <input type="hidden" name="action" value="delete_qrcode" />
+        <button style="border:none;background:none;color:#2371b1;" onclick="return confirm(' . $confirm_msg . ')" type="submit">Delete</button>
+      </form> | ';
+
+    if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
+        echo '<a href="' . esc_url($qr_code->qr_code_url) . '" download="qrcode.png">Download</a></td>';
+    } else {
+        echo '<a href="' . esc_url(admin_url('admin-ajax.php?action=download_qr_code&post_id=' . $qr_id)) . '" download="qrcode.png">Download</a></td>';
+    }
+    echo '</tr>';
+}
+
+echo '</tbody>';
+echo '</table>';
+echo '<div class="tablenav"><div class="tablenav-pages">' . $page_links . '</div></div>';
+echo '</div>';
 }
 }
 

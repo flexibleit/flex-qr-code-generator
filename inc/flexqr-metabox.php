@@ -25,7 +25,7 @@ function flexqr_code_meta_box_html($post) {
         // print_r($_SERVER['REQUEST_URI']);
         global $wpdb;
         // Generate the QR code using the QR code library.
-        $query = "SELECT * FROM ".$wpdb->prefix."qr_codes where qr_code_url=%s";
+        $query = "SELECT * FROM ".$wpdb->prefix."qr_codes where text=%s";
         $qr_codes = $wpdb->get_results($wpdb->prepare($query, $qr_code_url));
 
         if (count($qr_codes) == 0 || count($qr_codes) < 0) {
@@ -33,7 +33,7 @@ function flexqr_code_meta_box_html($post) {
             $wpdb->prefix . 'qr_codes',
             array(
               'text' => $qr_code_url,
-              'qr_code_url' => $qr_code_url
+              'qr_code_url' => $qr_code_url . '?id=' . $post->ID
             ),
             array(
               '%s',
