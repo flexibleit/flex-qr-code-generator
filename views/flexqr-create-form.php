@@ -164,8 +164,13 @@ function flexqr_code_generator_options() {
 
     // Extract the ID from the qr_code_url
     $url_components = parse_url($qr_code->qr_code_url);
-    parse_str($url_components['query'], $params);
-    $qr_id = isset($params['id']) ? intval($params['id']) : 0;
+
+    if (isset($url_components['query'])) {
+        parse_str($url_components['query'], $params);
+        $qr_id = isset($params['id']) ? intval($params['id']) : 0;
+    } else {
+        $qr_id = 0; // Default value or handle the error as needed
+    }
 
     $confirm_msg = "'are you sure?'";
     echo '<td>

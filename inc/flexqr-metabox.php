@@ -21,19 +21,20 @@ function flexqr_code_meta_box_html($post) {
 
     if ($post->post_status === 'publish') {
         $qr_code_url = get_permalink($post->ID);
-        $shortcode_text = '[flexqr_code url="' . esc_url($qr_code_url) . '" size="155"]';
+        $shortcode_text = '[flexqr_code url="' . esc_url($qr_code_url) . '?track=true" size="155"]';
         // print_r($_SERVER['REQUEST_URI']);
         global $wpdb;
         // Generate the QR code using the QR code library.
+        $qr_url = $qr_code_url. '?track=true';
         $query = "SELECT * FROM ".$wpdb->prefix."qr_codes where text=%s";
-        $qr_codes = $wpdb->get_results($wpdb->prepare($query, $qr_code_url));
+        $qr_codes = $wpdb->get_results($wpdb->prepare($query, $qr_url));
 
         if (count($qr_codes) == 0 || count($qr_codes) < 0) {
         $result = $wpdb->insert(
             $wpdb->prefix . 'qr_codes',
             array(
-              'text' => $qr_code_url,
-              'qr_code_url' => $qr_code_url . '?id=' . $post->ID
+              'text' => $qr_code_url . '?track=true',
+              'qr_code_url' => $qr_code_url . '?id=' . $post->ID,
             ),
             array(
               '%s',
