@@ -120,7 +120,7 @@ function flexqr_code_generator_options() {
   echo '<thead>';
   echo '<tr>';
   echo '<th>Text</th>';
-  echo '<th>QR Code</th><th>Shortcode</th><th>Actions</th>';
+  echo '<th>Scanned</th><th>QR Code</th><th>Shortcode</th><th>Actions</th>';
   echo '</tr>';
   echo '</thead>';
   echo '<tbody>';
@@ -149,6 +149,7 @@ function flexqr_code_generator_options() {
     // $date_created = date('Y-m-d H:i:s', strtotime($qr_code->date_created));
     echo '<tr>';
     echo '<td>' . esc_html($qr_code->text) . '</td>';
+    echo '<td>'. esc_html($qr_code->tracking) .'</td>';
     echo '<td>';
     if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
         echo '<img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code">';
