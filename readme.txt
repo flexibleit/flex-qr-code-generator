@@ -1,5 +1,5 @@
 # Flex QR Code Generator
-Tags: qrcode, qrcodegenerator, qrcode generator, qr code, dynamic qr code
+Tags: qrcode, qrcode generator, qr code, dynamic qr code, qrcode tracking
 Requires at least: 4.6
 Tested up to: 6.4.3
 Stable tag: 1.1.5
@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 This is a simple plugin that allows you to generate QR codes on your WordPress website and show the qrcode with shortcode. You can select the color, design, and eye style for your QR codes and easily view and download all your created QR codes from the admin dashboard. You can copy the shortcode and show it anywhere you want to show it.
 
 == Short Description ==
-A simple plugin that allows you to generate QR codes on your WordPress website and show the qrcode with shortcode.
+A simple plugin that allows you to generate customized QR codes for any page, posts or products and show the qrcode with shortcode, you can track how much it scanned.
 
 ## Features
 - Easy-to-use interface for generating QR codes
@@ -77,4 +77,4 @@ If you want to contribute to the development of the plugin, you can submit a pul
 ### 1.1.4
 - Update security validation
 ### 1.1.5
-- Track qrcode 
+- Tracking qrcode 
