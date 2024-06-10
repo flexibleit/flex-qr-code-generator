@@ -24,7 +24,7 @@ A simple plugin that allows you to generate customized QR codes for any page, po
 * We provide live support
 
 == Screenshots ==
-1. The admin view of created QR Codes screenshot-1.jpg
+1. The admin view of created QR Codes screenshot-1.png
 2. The QR Code Create form in admin screenshot-2.jpg
 3. Show QR code with shortcode in the post sidebar screenshot-3.png 
 4. Show QR code with shortcode in product page screenshot-4.png
