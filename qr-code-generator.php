@@ -7,7 +7,7 @@
  * Author URI:  https://devsbrain.com
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version:     1.1.5
+ * Version:     1.1.6
  * Text Domain: flex-qr-code-generator
  *
  * @package flex-qr-code-generator
