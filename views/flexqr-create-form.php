@@ -238,9 +238,12 @@ if (!function_exists('flexqr_generate_qr_code')) {
           '%s'
         )
       );
-      if ($result == 1) {
+      if ($result == 1 && $qr_code_format != 'eps') {
        echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
        echo '<img src="' . esc_url($qr_code_url) . '" alt="QR code">';
+      } else if ($result == 1 && $qr_code_format == 'eps') {
+        echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
+        echo '<p>'.esc_html_e("No Preview for eps file. Please download it from the below table.", "flex-qr-code-generator").'</p>';
       }
     }
   }
