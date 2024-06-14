@@ -151,11 +151,17 @@ function flexqr_code_generator_options() {
     echo '<td>' . esc_html($qr_code->text) . '</td>';
     echo '<td>'. esc_html($qr_code->tracking) .'</td>';
     echo '<td>';
-    if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
-        echo '<img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code">';
+    
+    if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false ) {
+      // Check if the URL has an 'eps' extension
+      if (strpos($qr_code->qr_code_url, 'eps') !== false) {
+          echo 'No preview for eps file';
+      } else {
+          echo '<img width="50" src="' . esc_url($qr_code->qr_code_url) . '" alt="QR code">';
+      }
     } else {
         echo do_shortcode('[flexqr_code url="' . esc_url($qr_code->qr_code_url) . '" size="50" bgcolor="#ffffff" padding="5px" margin="5px"]');
-    }
+    }  
     echo '</td>';
     if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
         echo '<td>[flexqr_code data-id="' . esc_html($qr_code->id) . '" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
