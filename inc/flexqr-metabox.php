@@ -50,13 +50,32 @@ function flexqr_code_meta_box_html($post) {
             $qr_code_html = '
             <div style="float:left; margin-right:20px;">
                 <h3>QR Code Preview:</h3>
-                <div style="margin-bottom: 10px;">' . do_shortcode($shortcode_text) . '</div>';
+                <div style="margin-bottom: 10px;">' . do_shortcode($shortcode_text) . '</div>'; ?>
+                <script>
+                   
+                    function flexQrDownloadQRCode() {
+                        console.log('flex qr download')
+                        var flexqr_qr_download_format = document.getElementById("flexqr_download_format").value;
+                        var flexqr_qr_download_url= "<?php echo admin_url('admin-ajax.php?action=download_qr_code&post_id='.$post->ID); ?>&format="+flexqr_qr_download_format;
+                        window.open(flexqr_qr_download_url)
+                    }
+                </script>
 
+<?php
             if ($download_button == 1) {
                 $qr_code_html .= '
                 <div style="margin-bottom: 18px">
-                    <a style="border: 1px solid blue; padding: 8px 18px; border-radius: 5px; background: blue; color: white; text-decoration: none;"
-                    href="' . esc_url(admin_url('admin-ajax.php?action=download_qr_code&post_id=' . $post->ID)) . '">Download QR Code</a>
+                    <form method="GET" action="' . esc_url(admin_url('admin-ajax.php?action=download_qr_code&post_id=' . $post->ID)) . '">
+                    <select id="flexqr_download_format" name="format">
+                    <option value="png">png</option>
+                    <option value="eps">eps</option>
+                    <option value="gif">gif</option>
+                    <option value="jpg">jpg</option>
+                    <option value="svg">svg</option>
+                    </select>
+                    <a onclick="flexQrDownloadQRCode()" style="border: 1px solid blue; padding: 8px 18px; border-radius: 5px; background: blue; color: white; text-decoration: none;"
+                    >Download QR Code</a>
+                    </form>
                 </div>';
             }
 
@@ -105,7 +124,10 @@ add_action('wp_ajax_download_qr_code', function () {
     }
 
     $qr_code_url = get_permalink($post_id);
-    $qr_code_image_url = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qr_code_url);
+    
+    $format = !empty($_GET['format']) ? $_GET['format'] : 'png';
+    $qr_code_image_url = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&format='.$format.'&data=' . urlencode($qr_code_url);
+    
 
     // Fetch QR code image
     $image_data = file_get_contents($qr_code_image_url);
@@ -113,11 +135,11 @@ add_action('wp_ajax_download_qr_code', function () {
     if ($image_data === false) {
         wp_send_json_error(['message' => 'Failed to fetch QR code'], 404);
     }
-
+    $filename = 'qr_code.'.$format;
     // Set headers for file download
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="qr_code.png"');
+    header('Content-Disposition: attachment; filename="'.$filename.'"');
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
     header('Pragma: public');

@@ -106,7 +106,7 @@ function flexqr_code_generator_options() {
   flexqr_delete_qr();
   
   // Display the plugin options page
-  echo '<div class=" wrap">';
+  echo '<div class=" wrap"><h2 class="wrap-container"></h2>';
   include_once "flexqr-top-header.php";
 
   echo '<div class="flex-qr-code-form"><h3>Create QR Code </h3>';

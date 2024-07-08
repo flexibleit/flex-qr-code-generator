@@ -2,7 +2,7 @@
 Tags: qrcode, qrcode generator, qr code, dynamic qr code, qrcode tracking
 Requires at least: 4.6
 Tested up to: 6.5.4
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 Requires PHP: 7.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html 
@@ -82,3 +82,5 @@ If you want to contribute to the development of the plugin, you can submit a pul
 ### 1.1.6
 - qr code eps file bug fixed
 - qr code table fixed for eps file
+### 1.1.7
+- post page qr code download format option added
