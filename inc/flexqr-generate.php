@@ -9,68 +9,68 @@ use chillerlan\QRCode\Output\QRMarkupSVG;
 
 use chillerlan\QRCode\Common\EccLevel;
 
-require_once __DIR__.'/../vendor/autoload.php';
 
-require_once __DIR__.'/../views/flexqr-create-form.php';
+
+// require_once __DIR__.'/../views/flexqr-create-form.php';
 
 function qrGenerate() {
 
-$options = new QROptions;      
+  $options = new QROptions;      
 
       // the extended SVG output module
-      class RandomDotsSVGOutput extends QRMarkupSVG{
+      // class RandomDotsSVGOutput extends QRMarkupSVG{
 
-        protected function path(string $path, int $M_TYPE):string{
-          // omit the "fill" and "opacity" attributes on the path element
-          return sprintf('<path class="%s" d="%s"/>', $this->getCssClass($M_TYPE), $path);
-        }
+      //   protected function path(string $path, int $M_TYPE):string{
+      //     // omit the "fill" and "opacity" attributes on the path element
+      //     return sprintf('<path class="%s" d="%s"/>', $this->getCssClass($M_TYPE), $path);
+      //   }
 
-        /**
-         * To alter the layer a module appears on, we need to re-implement the collection method
-         *
-         * @inheritDoc
-         */
-        protected function collectModules(Closure $transform):array{
-          $paths     = [];
-          $dotColors = $this->options->dotColors; // avoid magic getter in long loops
+      //   /**
+      //    * To alter the layer a module appears on, we need to re-implement the collection method
+      //    *
+      //    * @inheritDoc
+      //    */
+      //   protected function collectModules(Closure $transform):array{
+      //     $paths     = [];
+      //     $dotColors = $this->options->dotColors; // avoid magic getter in long loops
 
-          // collect the modules for each type
-          foreach($this->matrix->getMatrix() as $y => $row){
-            foreach($row as $x => $M_TYPE){
-              $M_TYPE_LAYER = $M_TYPE;
+      //     // collect the modules for each type
+      //     foreach($this->matrix->getMatrix() as $y => $row){
+      //       foreach($row as $x => $M_TYPE){
+      //         $M_TYPE_LAYER = $M_TYPE;
 
-              if($this->connectPaths && !$this->matrix->checkTypeIn($x, $y, $this->excludeFromConnect)){
-                // to connect paths we'll redeclare the $M_TYPE_LAYER to data only
-                $M_TYPE_LAYER = QRMatrix::M_DATA;
+      //         if($this->connectPaths && !$this->matrix->checkTypeIn($x, $y, $this->excludeFromConnect)){
+      //           // to connect paths we'll redeclare the $M_TYPE_LAYER to data only
+      //           $M_TYPE_LAYER = QRMatrix::M_DATA;
 
-                if($this->matrix->isDark($M_TYPE)){
-                  $M_TYPE_LAYER = QRMatrix::M_DATA_DARK;
-                }
-              }
+      //           if($this->matrix->isDark($M_TYPE)){
+      //             $M_TYPE_LAYER = QRMatrix::M_DATA_DARK;
+      //           }
+      //         }
 
-              // randomly assign another $M_TYPE_LAYER for the given types
-              // note that the layer id has to be an integer value,
-              // ideally outside the several bitmask values
-              if($M_TYPE_LAYER === QRMatrix::M_DATA_DARK){
-                $M_TYPE_LAYER = array_rand($dotColors);
-              }
+      //         // randomly assign another $M_TYPE_LAYER for the given types
+      //         // note that the layer id has to be an integer value,
+      //         // ideally outside the several bitmask values
+      //         if($M_TYPE_LAYER === QRMatrix::M_DATA_DARK){
+      //           $M_TYPE_LAYER = array_rand($dotColors);
+      //         }
 
-              // collect the modules per $M_TYPE
-              $module = $transform($x, $y, $M_TYPE, $M_TYPE_LAYER);
+      //         // collect the modules per $M_TYPE
+      //         $module = $transform($x, $y, $M_TYPE, $M_TYPE_LAYER);
 
-              if(!empty($module)){
-                $paths[$M_TYPE_LAYER][] = $module;
-              }
-            }
-          }
+      //         if(!empty($module)){
+      //           $paths[$M_TYPE_LAYER][] = $module;
+      //         }
+      //       }
+      //     }
 
-          // beautify output
-          ksort($paths);
+      //     // beautify output
+      //     ksort($paths);
 
-          return $paths;
-        }
+      //     return $paths;
+      //   }
 
-      }
+      // }
 
 
       /**
@@ -78,17 +78,17 @@ $options = new QROptions;
        *
        * @property array<int, string> $dotColors
        */
-      class RandomDotsOptions extends QROptions{
+      // class RandomDotsOptions extends QROptions{
 
-        /**
-         * a map of $M_TYPE_LAYER => color
-         *
-         * @see \array_rand()
-         * @var array<int, string>
-         */
-        protected array $dotColors = [];
+      //   /**
+      //    * a map of $M_TYPE_LAYER => color
+      //    *
+      //    * @see \array_rand()
+      //    * @var array<int, string>
+      //    */
+      //   protected array $dotColors = [];
 
-      }
+      // }
 
 
       /*
@@ -96,7 +96,7 @@ $options = new QROptions;
       */
 
       // prepare the options
-      $options = new RandomDotsOptions;
+      $options = new QROptions;
 
       // our custom dot colors
       // adding the IS_DARK flag so that the proper layer css class is assigned
@@ -125,7 +125,7 @@ $options = new QROptions;
         ]]></style>';        
 
       // set the custom output interface   
-      $options->outputInterface     = RandomDotsSVGOutput::class;
+      // $options->outputInterface     = RandomDotsSVGOutput::class;
 
       // common qrcode options
       $options->version             = 5;
@@ -155,5 +155,5 @@ $options = new QROptions;
       if(PHP_SAPI !== 'cli'){
         header('content-type: image/svg+xml');
       }
-    }
+  }
 qrGenerate();

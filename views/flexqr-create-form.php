@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
-require_once __DIR__.'/../inc/flexqr-generate.php';
+// require_once __DIR__.'/../vendor/autoload.php';
+// require_once __DIR__.'/../inc/flexqr-generate.php';
 
 if (!function_exists('flexqr_display_generator_form')) {
   function flexqr_display_generator_form() {
@@ -238,11 +238,44 @@ if (!function_exists('flexqr_generate_qr_code')) {
 
       // $data   = 'otpauth://totp/test?secret=B3JX4VCVJDVNXNZ5&issuer=chillerlan.net';
       // $qrcode = (new QRCode)->render($data);
+    //   $qrCodeGenerator = new FlexQr_QRCode([
+    //     'qr_text' => $qr_code_text,
+    //     // 'eye_color' => $_POST['eye_color'],
+    //     'dot_color' => $qr_code_color,
+    //     // 'qr_style' => $_POST['qr_style'],
+    //     'size' => $qr_code_size,
+    //     'margin' => $qr_code_margin,
+    //     'format' => $qr_code_format,
+    //     'input_logo' => $uploaded_logo['url'] ?? null
+    // ]);
 
+    // $qrCode = $qrCodeGenerator->generateQRCode();
+    $uploads = wp_upload_dir();
+    $logo_path = null;
+    
+    if (!empty($_FILES['input_logo']['tmp_name'])) {
+        $uploaded_logo = wp_handle_upload($_FILES['input_logo'], ['test_form' => false]);
+        $logo_path = $logo['file'];
+    }
+    
+    $qrCodeGenerator = new FlexQr_QRCode([
+      'qr_text' => $qr_code_text,
+      // 'eye_color' => $_POST['eye_color'],
+      'dot_color' => $qr_code_color,
+      // 'qr_style' => $_POST['qr_style'],
+      'size' => $qr_code_size,
+      'margin' => $qr_code_margin,
+      'format' => $qr_code_format,
+      'input_logo' => $uploaded_logo['url'] ?? null
+  ]);
+    
+    $filepath = $qrCodeGenerator->saveToFile($uploads['path']);
+    $url = $uploads['url'] . '/' . basename($filepath);
+    echo "<img src='".$url . "' />";
       // default output is a base64 encoded data URI
       // printf('<img src="%s" alt="QR Code" />', $qrcode);
       
-      echo '<svg width="300px" src="' . $GLOBALS["out"] . '" alt="QR code" >';
+      // echo '<svg width="300px" src="' . $GLOBALS["out"] . '" alt="QR code" >';
 
       // header('Content-type: image/svg+xml'); // the image type is SVG by default
 

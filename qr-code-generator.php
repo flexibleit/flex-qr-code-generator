@@ -88,11 +88,15 @@ function flexqr_activate_code_generator_plugin() {
 }
  register_activation_hook( __FILE__, 'flexqr_activate_code_generator_plugin' );
 
+ require_once FLEXQR_CODE_GENERATOR_PATH.'vendor/autoload.php';
+ require_once FLEXQR_CODE_GENERATOR_PATH.'inc/classes/class-flexqr-qrcode.php';
  include "inc/flexqr-helpers.php";
  include "inc/flexqr-metabox.php";
  include "inc/flexqr-settings.php";
  include "inc/flexqr-track.php";
  include "views/flexqr-create-form.php";
+
  // Alter database
  include "inc/flexqr-database.php";
+ 
  
