@@ -5,12 +5,18 @@ if (!function_exists('flexqr_alter_code_generator_table')) {
     function flexqr_alter_code_generator_table() {
       global $wpdb;
       $table_name = $wpdb->prefix . 'qr_codes';
-      $column = $wpdb->get_results("SHOW COLUMNS FROM `$table_name` LIKE 'tracking'");
+      $column = $wpdb->get_results("SHOW COLUMNS FROM `$table_name` LIKE 'tracking'");      
       if (empty($column)) {
         $sql = "ALTER TABLE $table_name 
                 ADD COLUMN tracking INT DEFAULT 0 NULL, 
                 ADD COLUMN tracking_details TEXT DEFAULT NULL";
-        $wpdb->query($sql);
+        $wpdb->query($sql);        
+      }
+      $column = $wpdb->get_results("SHOW COLUMNS FROM `$table_name` LIKE 'qr_data'");      
+      if (empty($column)) {
+        $sql = "ALTER TABLE $table_name 
+                ADD COLUMN qr_data TEXT DEFAULT NULL";                
+        $wpdb->query($sql);        
       }
     }
   }

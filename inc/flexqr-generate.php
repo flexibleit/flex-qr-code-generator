@@ -117,14 +117,14 @@ $options = new QROptions;
       }
 
 
-
+// .dark{ fill: '.flexqr_valid_input($_REQUEST['qr_code_color']).' }
       $options->svgDefs = '
         <style><![CDATA[
-          .dark{ fill: '.flexqr_valid_input($_REQUEST['qr_code_color']).' }          
+                  
           '.$layerColors.'
         ]]></style>';        
 
-      // set the custom output interface
+      // set the custom output interface   
       $options->outputInterface     = RandomDotsSVGOutput::class;
 
       // common qrcode options

@@ -254,6 +254,7 @@ if (!function_exists('flexqr_generate_qr_code')) {
         array(
           'text' => $qr_code_text,
           // 'qr_code_url' => $qr_code_url
+          'qr_data' => $qr_code_data
         ),
         array(
           '%s',
