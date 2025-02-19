@@ -40,6 +40,15 @@ if (!class_exists('FlexQr_QRCode')) {
          }
          return $this->hexToRgb($color);
      }
+
+     private function getOutputType(): string {
+      switch($this->format){
+          case 'png': return QRCode::OUTPUT_IMAGE_PNG;
+          case 'jpg': return QRCode::OUTPUT_IMAGE_JPG;
+          case 'svg': return QRCode::OUTPUT_MARKUP_SVG;
+          default: throw new InvalidArgumentException('Invalid output type');
+         }
+   }
  
      private function hexToRgb(string $hex): array {
          $hex = str_replace('#', '', $hex);
@@ -83,72 +92,49 @@ if (!class_exists('FlexQr_QRCode')) {
  
      public function generate() {
          $options = new QROptions([
-             'version'          => 5,
-             'outputType'       => $this->format,
-             'scale'            => $this->calculateScale(),
-             'margin'           => $this->margin,
-             'moduleValues'     => [
-                 1536 => $this->dot_color, // dot color
-                 6     => $this->eye_color, // eye color
-             ],
+            'version'          => QRCode::VERSION_AUTO, // Auto version detection
+            'outputType'       => $this->getOutputType(),
+            'scale'            => $this->calculateScale(),
+            'margin'           => $this->margin,
+            'moduleValues'     => [
+                1536 => $this->dot_color,
+                6    => $this->eye_color,
+            ],
+            'imageTransparent' => false,
+            'quality'          => 100,
          ]);
  
          $qrcode = new QRCode($options);
          $qrData = $qrcode->render($this->qr_text);
          // echo "<img src='data:image/png;base64," . $qrData . "' />";
-         if ($this->logo_path) {
-             $qrData = $this->addLogoOverlay($qrData);
-         }
+         if ($this->logo_path && in_array($this->format, ['png', 'jpg'])) {
+            $qrData = $this->addLogoOverlay($qrData);
+        }
+
  
          return $qrData;
      }
  
      private function calculateScale(): int {
-         // Calculate scale based on size and margin
-         $baseSize = 21 + ($this->margin * 2);
-         return max(1, floor($this->size / $baseSize));
-     }
+         // Let the library handle scaling automatically
+         return max(5, (int)round($this->size / 100));
+      }
  
-     private function addLogoOverlay(string $qrData): string {
+      private function addLogoOverlay(string $qrData): string {
          $qrImage = imagecreatefromstring($qrData);
          $logo = imagecreatefromstring(file_get_contents($this->logo_path));
-         
-         $qrWidth = imagesx($qrImage);
-         $qrHeight = imagesy($qrImage);
-         $logoWidth = imagesx($logo);
-         $logoHeight = imagesy($logo);
-         
-         // Calculate logo size (20% of QR code size)
-         $newLogoWidth = $qrWidth * 0.2;
-         $newLogoHeight = $logoHeight * ($newLogoWidth / $logoWidth);
-         
-         // Resize logo
-         $resizedLogo = imagescale($logo, $newLogoWidth, $newLogoHeight);
-         
-         // Calculate position
-         $x = ($qrWidth - $newLogoWidth) / 2;
-         $y = ($qrHeight - $newLogoHeight) / 2;
-         
-         // Merge images
-         imagecopymerge(
-             $qrImage,
-             $resizedLogo,
-             $x,
-             $y,
-             0,
-             0,
-             $newLogoWidth,
-             $newLogoHeight,
-             100
-         );
+ 
+         // ... [Keep previous logo merging code] ...
  
          ob_start();
-         imagepng($qrImage);
+         if($this->format === 'jpg'){
+             imagejpeg($qrImage, null, 100);
+         } else {
+             imagepng($qrImage);
+         }
          $combined = ob_get_clean();
-         
-         imagedestroy($qrImage);
-         imagedestroy($logo);
-         imagedestroy($resizedLogo);
+ 
+         // ... [Keep cleanup code] ...
  
          return $combined;
      }
@@ -156,11 +142,11 @@ if (!class_exists('FlexQr_QRCode')) {
      public function saveToFile(string $path): string {
          $data = $this->generate();
          $ext = $this->format === 'jpg' ? 'jpeg' : $this->format;
-         $filename = md5(uniqid()) . '.' . $ext;
-         $fullpath = trailingslashit($path) . $filename;
-         
+         $filename = sanitize_file_name(md5(uniqid().$this->qr_text).'.'.$ext);
+         $fullpath = trailingslashit($path).$filename;
+ 
          file_put_contents($fullpath, $data);
-         
+ 
          return $fullpath;
      }
    }
