@@ -5,7 +5,9 @@
 
 if (!function_exists('flexqr_display_generator_form')) {
   function flexqr_display_generator_form() {
-    echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
+    echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post" id="qrForm">';?>
+    <input type="hidden" name="action" value="flexqr_generate_qr">
+            <?php wp_nonce_field('qrcode_nonce', 'qrcode_nonce'); 
     echo '<table><tr><td><label for="flexqrcode_code_text">Enter text to encode in QR code:</label></td>';  
     echo '<td>
     <textarea id="flexqrcode_code_text" placeholder="text/url/anything"  name="qr_code_text" required style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></textarea>
@@ -65,6 +67,41 @@ if (!function_exists('flexqr_display_generator_form')) {
    //  echo '<br><br>';
     echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
    echo '<td><input type="color" id="qr_code_color" name="qr_code_color" style=" display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; "></td></tr>';
+   ?>
+    <tr><td><label for="finderDark">Finder Pattern Color (Dark):</label></td>
+    <td><input type="color" id="finderDark" name="finderDark" value="#000000"></td></tr>
+
+    <tr><td><label for="finderDot">Finder Dot Color:</label></td>
+    <td><input type="color" id="finderDot" name="finderDot" value="#FF0000"></td></tr>
+
+    <tr><td><label for="alignmentDark">Alignment Pattern Color (Dark):</label></td>
+    <td><input type="color" id="alignmentDark" name="alignmentDark" value="#00FF00"></td></tr>
+
+    <tr><td><label for="dataDark">Data Modules (Dark):</label></td>
+    <td><input type="color" id="dataDark" name="dataDark" value="#0000FF"></td></tr>
+
+    <tr><td><label for="dataLight">Data Modules Color (Light):</label></td>
+    <td><input type="color" id="dataLight" name="dataLight" value="#FFFFFF"></td></tr>
+
+    <label for="version">Select QR Code Version:</label>
+    <select id="version" name="version">
+        <?php for ($i = 1; $i <= 40; $i++): ?>
+            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+        <?php endfor; ?>
+    </select><br><br>
+    
+    
+    <label for="circleRadius">Circle Radius (0.1 to 0.5):</label>
+    <input type="number" id="circleRadius" name="circleRadius" value="0.4" min="0.1" max="0.5" step="0.1"><br><br>
+
+    <label for="drawCircularModules">Draw Circular Modules:</label>
+        <select id="drawCircularModules" name="drawCircularModules">
+            <option value="none">None</option>
+            <option value="image1">Image 1</option>
+            <option value="image2">Image 2</option>
+        </select><br><br>
+
+   <?php
    echo '<tr><td><label for="qr_code_size">Size(150 X 150):</label></td>';
    echo '<td><input type="number" id="qr_code_size" name="qr_code_size" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
    echo '<tr><td><label for="qr_code_format">QR Format:</label></td>';
@@ -79,6 +116,9 @@ if (!function_exists('flexqr_display_generator_form')) {
    echo '<td><input type="number" id="qr_code_margin" name="qr_code_margin" style="padding: 6px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; width: 300px;"></td></tr>';
    echo '<tr><td colspan="2"><input type="submit" class="button button-primary" style="padding: 7px 20px; margin: 8px 0;" value="Generate QR Code"></td></tr></table>';
    echo '</form>';  
+
+   echo '<div id="qrCodeOutput"></div>';
+
  }
 }
 
@@ -115,7 +155,7 @@ function flexqr_code_generator_options() {
   echo '<div class="flex-qr-code-form"><h3>Create QR Code </h3>';
   echo '<p>You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own.</p>';
   flexqr_display_generator_form();
-  flexqr_generate_qr_code();
+  // flexqr_generate_qr_code();
 
   echo '</div>';
   echo '<h3>Your QR Codes</h3>';
@@ -211,7 +251,7 @@ echo '</div>';
 }
 
 if (!function_exists('flexqr_generate_qr_code')) {
-  function flexqr_generate_qr_code() {
+  function flexqr_generate_qr_code($qr_only=false) {
     global $wpdb;
     if ( isset( $_POST['qr_code_text'] ) && isset( $_POST['qr_code_color'] ) ) {
       $qr_code_text = flexqr_valid_input( $_POST['qr_code_text'] );
@@ -268,6 +308,11 @@ if (!function_exists('flexqr_generate_qr_code')) {
       'format' => $qr_code_format,
       'input_logo' => $uploaded_logo['url'] ?? null
   ]);
+
+    if ($qr_only){
+      // return  $data = $this->generate($this->qr_text);
+      return $qrCodeGenerator->generate();
+    }
     
     $filepath = $qrCodeGenerator->saveToFile($uploads['path']);
     $url = $uploads['url'] . '/' . basename($filepath);
@@ -282,18 +327,18 @@ if (!function_exists('flexqr_generate_qr_code')) {
       // echo '<svg width="300px" src="' . (new QRCode($options))->render($data) . '" alt="QR code" >';
 
       // Store the QR code in the database
-      $result = $wpdb->insert(
-        $wpdb->prefix . 'qr_codes',
-        array(
-          'text' => $qr_code_text,
-          // 'qr_code_url' => $qr_code_url
-          'qr_data' => $qr_code_data
-        ),
-        array(
-          '%s',
-          '%s'
-        )
-      );
+      // $result = $wpdb->insert(
+      //   $wpdb->prefix . 'qr_codes',
+      //   array(
+      //     'text' => $qr_code_text,
+      //     // 'qr_code_url' => $qr_code_url
+      //     'qr_data' => $qr_code_data
+      //   ),
+      //   array(
+      //     '%s',
+      //     '%s'
+      //   )
+      // );
       if ($result == 1 && $qr_code_format != 'eps') {
        echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
        echo '<img src="' . esc_url($qr_code_url) . '" alt="QR code">';

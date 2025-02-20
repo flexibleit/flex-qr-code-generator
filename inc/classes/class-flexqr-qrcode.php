@@ -1,7 +1,12 @@
 <?php
-   use chillerlan\QRCode\QRCode;
-   use chillerlan\QRCode\QROptions;
-   use chillerlan\QRCode\Output\QROutputInterface;
+
+use chillerlan\QRCode\{QRCode, QROptions};
+use chillerlan\QRCode\Common\EccLevel;
+use chillerlan\QRCode\Data\QRMatrix;
+use chillerlan\QRCode\Output\{QRMarkupSVG, QRGdImage, QRInterventionImage, QRMarkupXML};
+use chillerlan\QRCode\Output\QRGdImageJPEG;
+use chillerlan\QRCode\Output\QREps;
+
 if (!class_exists('FlexQr_QRCode')) {
 
    class FlexQr_QRCode {
@@ -15,7 +20,7 @@ if (!class_exists('FlexQr_QRCode')) {
       private $logo_path;
 
       public function __construct($data) {
-         print_r($data);
+        //  print_r($data);
          // $this->qrText = $data['qr_text'] ?? 'Hello World';
          // $this->eyeColor = $data['eye_color'] ?? '#000000';
          // $this->dotColor = $data['dot_color'] ?? '#000000';
@@ -90,37 +95,238 @@ if (!class_exists('FlexQr_QRCode')) {
          return $path;
      }
  
-     public function generate() {
-         $options = new QROptions([
-            'version'          => QRCode::VERSION_AUTO, // Auto version detection
-            'outputType'       => $this->getOutputType(),
-            'scale'            => $this->calculateScale(),
-            'margin'           => $this->margin,
-            'moduleValues'     => [
-                1536 => $this->dot_color,
-                6    => $this->eye_color,
-            ],
-            'imageTransparent' => false,
-            'quality'          => 100,
-         ]);
- 
-         $qrcode = new QRCode($options);
-         $qrData = $qrcode->render($this->qr_text);
-         // echo "<img src='data:image/png;base64," . $qrData . "' />";
-         if ($this->logo_path && in_array($this->format, ['png', 'jpg'])) {
-            $qrData = $this->addLogoOverlay($qrData);
+     public function generate() {        
+
+        // Custom colors for different parts of the QR code
+        $dotColors = [
+            QRMatrix::M_FINDER_DARK => $_POST['finderDark'],
+            QRMatrix::M_FINDER_DOT  => $_POST['finderDot'],
+            QRMatrix::M_ALIGNMENT_DARK => $_POST['alignmentDark'],
+            QRMatrix::M_DATA_DARK   => $_POST['dataDark'],
+            QRMatrix::M_DATA        => $_POST['dataLight'],
+        ];
+
+// Get the selected version from the form
+$version = (int)$_POST['version'];
+
+// Get the selected circleRadius from the form
+$circleRadius = (float)$_POST['circleRadius'];
+
+// Get the selected drawCircularModules option from the form
+$drawCircularModules = isset($_POST['drawCircularModules']) ? true : false;
+
+// Function to prepare options for different formats
+function prepareOptions($outputInterface, $dotColors, $version, $circleRadius, $drawCircularModules) {
+    $options = new QROptions([
+        'version'             => $version,
+        'eccLevel'            => EccLevel::H,
+        'addQuietzone'        => true,
+        'outputBase64'        => true,
+        'drawLightModules'    => false,
+        'connectPaths'        => true,
+        'drawCircularModules' => $drawCircularModules !== 'none',
+        'circleRadius'        => $circleRadius,
+        'outputInterface'     => $outputInterface,
+        'moduleValues'        => $dotColors,        
+    ]);
+
+    return $options;
+}
+
+// Function to overlay a logo on the QR code
+// function overlayLogo($qrImage, $logoPath, $outputPath) {
+//     $qr = imagecreatefromstring($qrImage);
+//     $logo = imagecreatefromstring(file_get_contents($logoPath));
+
+//     // Get dimensions
+//     // $qrWidth = imagesx($qr);
+//     // $qrHeight = imagesy($qr);
+//     // $logoWidth = imagesx($logo);
+//     // $logoHeight = imagesy($logo);
+
+//     // Calculate logo placement
+//     // $logoQRWidth = $qrWidth / 5;
+//     // $scale = $logoWidth / $logoQRWidth;
+//     // $logoQRHeight = $logoHeight / $scale;
+
+//     // Overlay logo
+//     // imagecopyresampled($qr, $logo, $qrWidth / 2.5, $qrHeight / 2.5, 0, 0, $logoQRWidth, $logoQRHeight, $logoWidth, $logoHeight);
+
+//     // Save the image
+//     // imagepng($qr, $outputPath);
+//     // imagedestroy($qr);
+//     // imagedestroy($logo);
+// }
+
+// // Prepare the options for SVG output
+// $svgOptions = prepareOptions(QRMarkupSVG::class, $dotColors);
+
+// // Prepare the options for PNG output
+// $pngOptions = prepareOptions(QRGdImage::class, $dotColors);
+
+// // Prepare the options for JPEG output
+// $jpegOptions = prepareOptions(QRGdImageJPEG::class, $dotColors);
+
+// // Prepare the options for EPS output
+// $epsOptions = prepareOptions(QREps::class, $dotColors);
+
+// // Prepare the options for XML output
+// $xmlOptions = prepareOptions(QRMarkupXML::class, $dotColors);
+
+// // Data to encode
+// $data = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
+// // Generate the QR Code for SVG
+// $svgOut = (new QRCode($svgOptions))->render($data);
+
+// // Generate the QR Code for PNG
+// $pngOut = (new QRCode($pngOptions))->render($data);
+
+// // Generate the QR Code for JPEG
+// $jpegOut = (new QRCode($jpegOptions))->render($data);
+
+// // Generate the QR Code for EPS
+// $epsOut = (new QRCode($epsOptions))->render($data);
+
+// // Generate the QR Code for XML
+// $xmlOut = (new QRCode($xmlOptions))->render($data);
+
+// // Path to the logo
+// $logoPath = __DIR__ . '/logo.png';
+
+// // Path to save the final image with logo
+// $outputPath = __DIR__ . '/qrcode_with_logo.png';
+
+// // Overlay the logo on the PNG QR Code
+// overlayLogo($pngOut, $logoPath, $outputPath);
+
+// // Output the SVG QR Code
+// if (PHP_SAPI !== 'cli') {
+//     header('content-type: image/svg+xml');
+// }
+// echo $svgOut;
+
+// // Output the PNG QR Code
+// if (PHP_SAPI !== 'cli') {
+//     header('content-type: image/png');
+// }
+// echo $pngOut;
+
+// // Output the JPEG QR Code
+// if (PHP_SAPI !== 'cli') {
+//     header('content-type: image/jpeg');
+// }
+// echo $jpegOut;
+
+// // Output the EPS QR Code
+// if (PHP_SAPI !== 'cli') {
+//     header('content-type: application/postscript');
+// }
+// echo $epsOut;
+
+// // Output the XML QR Code
+// if (PHP_SAPI !== 'cli') {
+//     header('content-type: application/xml');
+// }
+// echo $xmlOut;
+
+        // Get the selected output format from the form
+        $qr_code_format = $_POST['qr_code_format'];
+
+        // Determine the output interface based on the selected format
+        switch ($qr_code_format) {
+            case 'svg':
+                $outputInterface = QRMarkupSVG::class;
+                $contentType = 'image/svg+xml';
+                break;
+            case 'png':
+                $outputInterface = QRGdImage::class;
+                $contentType = 'image/png';
+                break;
+            case 'jpeg':
+                $outputInterface = QRGdImageJPEG::class;
+                $contentType = 'image/jpeg';
+                break;
+            case 'eps':
+                $outputInterface = QREps::class;
+                $contentType = 'application/postscript';
+                break;
+            case 'xml':
+                $outputInterface = QRMarkupXML::class;
+                $contentType = 'application/xml';
+                break;
+            default:
+                $outputInterface = QRMarkupSVG::class;
+                $contentType = 'image/svg+xml';
         }
 
- 
-         return $qrData;
+        // Prepare the options for the selected output format
+        $options = prepareOptions($outputInterface, $dotColors, $version, $circleRadius, $drawCircularModules);
+
+        // Data to encode
+        // $data = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
+        // Generate the QR Code
+        $qrOut = (new QRCode($options))->render($this->qr_text);
+
+        // Path to save the final image with logo
+        $outputPath = __DIR__ . '/qrcode_with_logo.png';
+
+        // Overlay the logo on the PNG QR Code if a logo is uploaded and the format is PNG
+        if ($qr_code_format === 'png' && isset($_FILES['logo']) && $_FILES['logo']['error'] == UPLOAD_ERR_OK) {
+            $logoPath = $_FILES['logo']['tmp_name'];
+            overlayLogo($qrOut, $logoPath, $outputPath);
+            $qrOut = file_get_contents($outputPath);
+        }
+
+        // Function to overlay circular modules with an image
+    function overlayCircularModules($qrImage, $moduleImage, $outputPath) {
+        $qr = imagecreatefromstring($qrImage);
+        $module = imagecreatefromstring(file_get_contents($moduleImage));
+
+        // Get dimensions
+        $qrWidth = imagesx($qr);
+        $qrHeight = imagesy($qr);
+        $moduleWidth = imagesx($module);
+        $moduleHeight = imagesy($module);
+
+        // Overlay circular modules
+        for ($x = 0; $x < $qrWidth; $x += $moduleWidth) {
+            for ($y = 0; $y < $qrHeight; $y += $moduleHeight) {
+                imagecopyresampled($qr, $module, $x, $y, 0, 0, $moduleWidth, $moduleHeight, $moduleWidth, $moduleHeight);
+            }
+        }        
+
+        // Output the QR Code
+        if (PHP_SAPI !== 'cli') {
+            header('content-type: ' . $contentType);
+        }
+
+        // echo $qrOut;
+        // echo "<img src='".$qrOut . "' />";
+        return $qrOut;
+
+        // Overlay circular modules with an image if selected
+     if ($drawCircularModules === 'image1') {
+        // print_r($drawCircularModules);
+        $moduleImage = plugin_dir_path(__FILE__) . 'images/circle1.png';
+        overlayCircularModules($qrOut, $moduleImage, $outputPath);
+        $qrOut = file_get_contents($outputPath);
+    } elseif ($drawCircularModules === 'image2') {
+        $moduleImage = plugin_dir_path(__FILE__) . 'images/circle2.png';
+        overlayCircularModules($qrOut, $moduleImage, $outputPath);
+        $qrOut = file_get_contents($outputPath);
+       
      }
+
+            
  
-     private function calculateScale(): int {
+    //  private function calculateScale(): int {
          // Let the library handle scaling automatically
          return max(5, (int)round($this->size / 100));
       }
  
-      private function addLogoOverlay(string $qrData): string {
+    //   private function addLogoOverlay(string $qrData): string {
          $qrImage = imagecreatefromstring($qrData);
          $logo = imagecreatefromstring(file_get_contents($this->logo_path));
  
@@ -140,7 +346,7 @@ if (!class_exists('FlexQr_QRCode')) {
      }
  
      public function saveToFile(string $path): string {
-         $data = $this->generate();
+         $data = $this->generate($this->qr_text);
          $ext = $this->format === 'jpg' ? 'jpeg' : $this->format;
          $filename = sanitize_file_name(md5(uniqid().$this->qr_text).'.'.$ext);
          $fullpath = trailingslashit($path).$filename;
@@ -149,5 +355,9 @@ if (!class_exists('FlexQr_QRCode')) {
  
          return $fullpath;
      }
+
+     
+    }
+
+     
    }
-}

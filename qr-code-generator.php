@@ -39,7 +39,7 @@ function flexqr_code_generator_deactivate() {
 // Adding custom css and js for styling in the WordPress admin area
 if (!function_exists('flexqr_code_generator_scripts')) {
 function flexqr_code_generator_scripts() {
-  wp_enqueue_style( 'flexqr-code-generator-style', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.css' );
+  wp_enqueue_style( 'flexqr-code-generator-style', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.css', array(), '1.1.7' );
   wp_enqueue_script( 'flexqr-code-generator-script', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.js', array( 'jquery' ) );
   wp_enqueue_script( 'jquery-script', "https://code.jquery.com/jquery-3.6.4.min.js", array( 'jquery' ), true );
 }
@@ -99,4 +99,18 @@ function flexqr_activate_code_generator_plugin() {
  // Alter database
  include "inc/flexqr-database.php";
  
+ // Handle the AJAX request
+function qr_code_generator_ajax() {
+
+    $outputFormat = flexqr_generate_qr_code(true);
+      $response = [
+        'qrCode' => $outputFormat,
+    ];
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+  wp_die();
+}
+add_action('wp_ajax_flexqr_generate_qr', 'qr_code_generator_ajax');
+add_action('wp_ajax_nopriv_flexqr_generate_qr', 'qr_code_generator_ajax');
  
