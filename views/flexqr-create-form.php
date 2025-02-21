@@ -85,21 +85,20 @@ if (!function_exists('flexqr_display_generator_form')) {
 
     <label for="version">Select QR Code Version:</label>
     <select id="version" name="version">
-        <?php for ($i = 1; $i <= 40; $i++): ?>
+        <?php for ($i = 7; $i <= 10; $i++): ?>
             <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
         <?php endfor; ?>
     </select><br><br>
     
     
-    <label for="circleRadius">Circle Radius (0.1 to 0.5):</label>
-    <input type="number" id="circleRadius" name="circleRadius" value="0.4" min="0.1" max="0.5" step="0.1"><br><br>
+    <label for="circleRadius">Circle Radius (0.2 to 0.75):</label>
+    <input type="number" id="circleRadius" name="circleRadius" min="0.2" max="0.75" step="0.05" value="0.45"><br><br>
 
-    <label for="drawCircularModules">Draw Circular Modules:</label>
-        <select id="drawCircularModules" name="drawCircularModules">
-            <option value="none">None</option>
-            <option value="image1">Image 1</option>
-            <option value="image2">Image 2</option>
-        </select><br><br>
+    <label for="drawCircularModules">Draw Circular Modules:</label><br>        
+        <input type="radio" id="image1" name="drawCircularModules" value="1">
+        <label for="image1"><img src="<?php echo plugin_dir_url(__FILE__); ?>../dot.png" alt="Image 1" class="module-preview"></label><br>
+        <input type="radio" id="image2" name="drawCircularModules" value="0" checked>
+        <label for="image2"><img src="<?php echo plugin_dir_url(__FILE__); ?>../round.png" alt="Image 2" class="module-preview"></label><br><br>
 
    <?php
    echo '<tr><td><label for="qr_code_size">Size(150 X 150):</label></td>';
@@ -250,102 +249,3 @@ echo '</div>';
 }
 }
 
-if (!function_exists('flexqr_generate_qr_code')) {
-  function flexqr_generate_qr_code($qr_only=false) {
-    global $wpdb;
-    if ( isset( $_POST['qr_code_text'] ) && isset( $_POST['qr_code_color'] ) ) {
-      $qr_code_text = flexqr_valid_input( $_POST['qr_code_text'] );
-      $qr_code_color = flexqr_valid_input( $_POST['qr_code_color']);
-      $qr_code_options='';
-      if (!empty($qr_code_color )) {
-        list($r, $g, $b) = sscanf($qr_code_color, "#%02x%02x%02x");
-        $qr_code_options.= '&color='.$r.'-'. $g.'-'. $b;
-      }
-      $qr_code_format = flexqr_valid_input( $_POST['qr_code_format'] );
-      if (!empty($qr_code_format)) $qr_code_options.= '&format='.$qr_code_format;
-      $qr_code_size =  flexqr_valid_input($_POST['qr_code_size'], true);
-      if (!empty($qr_code_size)) $qr_code_options.= '&size='.$qr_code_size;
-      $qr_code_margin =  flexqr_valid_input($_POST['qr_code_margin'], true);
-      if (!empty($qr_code_margin)) $qr_code_options.= '&margin='.$qr_code_margin;
-      
-      // $qr_code_design = sanitize_text_field( $_POST['qr_code_design'] );
-      // $qr_code_eye_style = sanitize_text_field( $_POST['qr_code_eye_style'] );
-      
-      // Generate QR code URL based on selected options
-      // $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?data=" . urlencode( $qr_code_text ) .$qr_code_options ;
-  
-      // $qr_code_url   = '' . urlencode( $qr_code_text ) .$qr_code_options;
-
-      // $data   = 'otpauth://totp/test?secret=B3JX4VCVJDVNXNZ5&issuer=chillerlan.net';
-      // $qrcode = (new QRCode)->render($data);
-    //   $qrCodeGenerator = new FlexQr_QRCode([
-    //     'qr_text' => $qr_code_text,
-    //     // 'eye_color' => $_POST['eye_color'],
-    //     'dot_color' => $qr_code_color,
-    //     // 'qr_style' => $_POST['qr_style'],
-    //     'size' => $qr_code_size,
-    //     'margin' => $qr_code_margin,
-    //     'format' => $qr_code_format,
-    //     'input_logo' => $uploaded_logo['url'] ?? null
-    // ]);
-
-    // $qrCode = $qrCodeGenerator->generateQRCode();
-    $uploads = wp_upload_dir();
-    $logo_path = null;
-    
-    if (!empty($_FILES['input_logo']['tmp_name'])) {
-        $uploaded_logo = wp_handle_upload($_FILES['input_logo'], ['test_form' => false]);
-        $logo_path = $logo['file'];
-    }
-    
-    $qrCodeGenerator = new FlexQr_QRCode([
-      'qr_text' => $qr_code_text,
-      // 'eye_color' => $_POST['eye_color'],
-      'dot_color' => $qr_code_color,
-      // 'qr_style' => $_POST['qr_style'],
-      'size' => $qr_code_size,
-      'margin' => $qr_code_margin,
-      'format' => $qr_code_format,
-      'input_logo' => $uploaded_logo['url'] ?? null
-  ]);
-
-    if ($qr_only){
-      // return  $data = $this->generate($this->qr_text);
-      return $qrCodeGenerator->generate();
-    }
-    
-    $filepath = $qrCodeGenerator->saveToFile($uploads['path']);
-    $url = $uploads['url'] . '/' . basename($filepath);
-    echo "<img src='".$url . "' />";
-      // default output is a base64 encoded data URI
-      // printf('<img src="%s" alt="QR Code" />', $qrcode);
-      
-      // echo '<svg width="300px" src="' . $GLOBALS["out"] . '" alt="QR code" >';
-
-      // header('Content-type: image/svg+xml'); // the image type is SVG by default
-
-      // echo '<svg width="300px" src="' . (new QRCode($options))->render($data) . '" alt="QR code" >';
-
-      // Store the QR code in the database
-      // $result = $wpdb->insert(
-      //   $wpdb->prefix . 'qr_codes',
-      //   array(
-      //     'text' => $qr_code_text,
-      //     // 'qr_code_url' => $qr_code_url
-      //     'qr_data' => $qr_code_data
-      //   ),
-      //   array(
-      //     '%s',
-      //     '%s'
-      //   )
-      // );
-      if ($result == 1 && $qr_code_format != 'eps') {
-       echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
-       echo '<img src="' . esc_url($qr_code_url) . '" alt="QR code">';
-      } else if ($result == 1 && $qr_code_format == 'eps') {
-        echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
-        echo '<p>'.esc_html_e("No Preview for eps file. Please download it from the below table.", "flex-qr-code-generator").'</p>';
-      }
-    }
-  }
-}

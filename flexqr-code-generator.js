@@ -54,7 +54,7 @@ jQuery(document).ready(function($) {
            type: 'POST',
            data: formData,
            processData: false,
-           contentType: false,
+           contentType: true,
            success: function(response) {
                $('#qrCodeOutput').html('<img src="' + response.qrCode + '" alt="QR Code">');
            },

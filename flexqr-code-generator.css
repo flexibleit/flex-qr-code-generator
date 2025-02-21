@@ -32,5 +32,11 @@ input#qr_code_color {
    margin-bottom: 10px;
 }
 #qrCodeOutput img {
-   max-width: 150px;
+   max-width: 300px;
+}
+.module-preview {
+   width: 50px;
+   height: 50px;
+   border: 1px solid #ccc;
+   margin-right: 10px;
 }
