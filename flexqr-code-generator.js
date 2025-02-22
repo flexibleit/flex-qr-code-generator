@@ -54,9 +54,10 @@ jQuery(document).ready(function($) {
            type: 'POST',
            data: formData,
            processData: false,
-           contentType: true,
+           contentType: false,
            success: function(response) {
                $('#qrCodeOutput').html('<img src="' + response.qrCode + '" alt="QR Code">');
+               // $('#qrCodeOutput_1').html(response.qrCode);
            },
            error: function(xhr, status, error) {
                console.error('AJAX Error: ' + status + error);

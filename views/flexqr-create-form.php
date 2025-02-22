@@ -65,23 +65,26 @@ if (!function_exists('flexqr_display_generator_form')) {
 
 
    //  echo '<br><br>';
-    echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
+    // echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
    echo '<td><input type="color" id="qr_code_color" name="qr_code_color" style=" display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; "></td></tr>';
    ?>
-    <tr><td><label for="finderDark">Finder Pattern Color (Dark):</label></td>
+    <!-- <tr><td><label for="finderDark">Finder Pattern Color (Dark):</label></td>
     <td><input type="color" id="finderDark" name="finderDark" value="#000000"></td></tr>
 
     <tr><td><label for="finderDot">Finder Dot Color:</label></td>
     <td><input type="color" id="finderDot" name="finderDot" value="#FF0000"></td></tr>
 
     <tr><td><label for="alignmentDark">Alignment Pattern Color (Dark):</label></td>
-    <td><input type="color" id="alignmentDark" name="alignmentDark" value="#00FF00"></td></tr>
+    <td><input type="color" id="alignmentDark" name="alignmentDark" value="#00FF00"></td></tr> -->
 
-    <tr><td><label for="dataDark">Data Modules (Dark):</label></td>
-    <td><input type="color" id="dataDark" name="dataDark" value="#0000FF"></td></tr>
+    <tr><td><label for="eye_color">Eye Color:</label></td>
+    <td><input type="color" id="eye_color" name="eye_color"></td></tr>
 
-    <tr><td><label for="dataLight">Data Modules Color (Light):</label></td>
-    <td><input type="color" id="dataLight" name="dataLight" value="#FFFFFF"></td></tr>
+    <tr><td><label for="dot_color">Dot Color:</label></td>
+    <td><input type="color" id="dot_color" name="dot_color"></td></tr>
+
+    <tr><td><label for="background_color">background_color:</label></td>
+    <td><input type="color" id="background_color" name="background_color"></td></tr>
 
     <label for="version">Select QR Code Version:</label>
     <select id="version" name="version">
@@ -92,7 +95,7 @@ if (!function_exists('flexqr_display_generator_form')) {
     
     
     <label for="circleRadius">Circle Radius (0.2 to 0.75):</label>
-    <input type="number" id="circleRadius" name="circleRadius" min="0.2" max="0.75" step="0.05" value="0.45"><br><br>
+    <input type="number" id="circleRadius" name="circleRadius" min="0.2" max="0.75" step="0.05" value="0.4"><br><br>
 
     <label for="drawCircularModules">Draw Circular Modules:</label><br>        
         <input type="radio" id="image1" name="drawCircularModules" value="1">
@@ -117,6 +120,7 @@ if (!function_exists('flexqr_display_generator_form')) {
    echo '</form>';  
 
    echo '<div id="qrCodeOutput"></div>';
+  //  echo '<div id="qrCodeOutput_1"></div>';
 
  }
 }

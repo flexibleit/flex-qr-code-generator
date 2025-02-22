@@ -125,15 +125,18 @@ function qr_code_generator_ajax() {
     }
      $qrCodeGenerator = new FlexQr_QRCode([
                 'qr_text' => $qr_code_text,
-                // 'eye_color' => $_POST['eye_color'],
-                'dot_color' => $qr_code_color,
+                'eye_color' => $_POST['eye_color'],
+                'dot_color' => $_POST['dot_color'],
+                'background_color' => $_POST['background_color'],
+                // 'dot_color' => $qr_code_color,
                 // 'qr_style' => $_POST['qr_style'],
                 'size' => $qr_code_size,
                 'margin' => $qr_code_margin,
                 'format' => $qr_code_format,
                 'input_logo' => $uploaded_logo['url'] ?? null,
                 'drawCircularModules' => $_POST['drawCircularModules'],
-                'dataLight' => $_POST['dataLight'] ?? null,
+                // 'dataLight' => $_POST['dataLight'] ?? null,
+
               ]);
     $qr_code_format = $qrCodeGenerator->generate(true);
       $response = [
