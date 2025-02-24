@@ -31,6 +31,9 @@ input#qr_code_color {
    font-size: 22px;
    margin-bottom: 10px;
 }
+/* #qrCodeOutput {
+   max-width: 300px;
+} */
 #qrCodeOutput img {
    max-width: 300px;
 }

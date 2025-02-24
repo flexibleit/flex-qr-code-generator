@@ -80,11 +80,11 @@ if (!function_exists('flexqr_display_generator_form')) {
     <tr><td><label for="eye_color">Eye Color:</label></td>
     <td><input type="color" id="eye_color" name="eye_color"></td></tr>
 
-    <tr><td><label for="dot_color">Dot Color:</label></td>
-    <td><input type="color" id="dot_color" name="dot_color"></td></tr>
+    <tr><td><label for="dot_background_color">Dot Background Color:</label></td>
+    <td><input type="color" id="dot_background_color" name="dot_background_color"></td></tr>
 
-    <tr><td><label for="background_color">background_color:</label></td>
-    <td><input type="color" id="background_color" name="background_color"></td></tr>
+    <!-- <tr><td><label for="background_color">background_color:</label></td>
+    <td><input type="color" id="background_color" name="background_color"></td></tr> -->
 
     <label for="version">Select QR Code Version:</label>
     <select id="version" name="version">

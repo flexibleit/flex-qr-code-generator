@@ -13,8 +13,8 @@ if (!class_exists('FlexQr_QRCode')) {
 
    class FlexQr_QRCode {
       private $qr_text;
-      public $eye_color;
-      public $dot_color;
+    //   public $eye_color;
+      private $dot_background_color;
       private $qr_style;
       private $size;
       private $margin;
@@ -22,10 +22,9 @@ if (!class_exists('FlexQr_QRCode')) {
       private $logo_path;
       private $drawCircularModules;
       private $circleRadius;
-      public $background_color;
-      public $data;
+    //   private $background_color;
 
-      public function __construct($data) {
+      public function __construct() {
         //  print_r($data);
          // $this->qrText = $data['qr_text'] ?? 'Hello World';
          // $this->eyeColor = $data['eye_color'] ?? '#000000';
@@ -35,24 +34,22 @@ if (!class_exists('FlexQr_QRCode')) {
         //  $this->margin = (int) ($data['margin'] ?? 10);
          // $this->format = $data['format'] ?? 'png';
          // $this->inputLogo = $data['input_logo'] ?? null;
-         $this->qr_text   = sanitize_text_field($data['qr_text'] ?? 'Hello World');
+         $this->qr_text   = flexqr_valid_input($_POST['qr_code_text'] ?? 'Hello World');
         //  $this->eye_color = $this->validateColor($data['eye_color'] ?? '#000000');
-         $this->eye_color = $this->$data['eye_color'];
+        //  $this->eye_color = $this->$_POST['eye_color'];
         //  $this->dot_color = $this->validateColor($data['dot_color'] ?? '#000000');
-        $this->dot_color = $this->$data['dot_color'];
+        // $this->dot_color = $this->$_POST['dot_color'];
         //  $this->qr_style  = $this->validateStyle($data['qr_style'] ?? 'square');
          // $this->size     = absint($size);
          // $this->margin   = absint($margin);
-         $this->format   = $this->validateFormat($data['format'] ?? 'png');
-         $this->logo_path = $data['input_logo'] ? $this->validateLogo($data['input_logo']) : null;
-         $this->circleRadius = (float) $data['circleRadius'] ?? 0.4;
-         $this->drawCircularModules = $data['drawCircularModules'] == 1 ? true : false;
+        //  $this->format   = $this->validateFormat($_POST['format'] ?? 'svg');
+         $this->logo_path = $_POST['input_logo'] ? $this->validateLogo('input_logo') : null;
+         $this->circleRadius = (float) $_POST['circleRadius'] ?? 0.4;
+         $this->drawCircularModules = $_POST['drawCircularModules'] == 1 ? true : false;
         //  echo 'dataLight'.$data['dataLight'];
         //  print_r($this->hexToRgb($data['dataLight']));
         //  $this->background_color = $this->validateColor($data['background_color'] ?? '#000000');
-        $this->background_color = $this->$data['background_color'];
-        //  echo 'cxvxc'.$this->dataLight;
-        // print_r($data);        
+        // $this->background_color = $this->$_POST['background_color']; 
      }
  
      private function validateColor(string $color): array {
@@ -126,141 +123,121 @@ if (!class_exists('FlexQr_QRCode')) {
         //     QRMatrix::M_FINDER       => $_POST['dataLight'],
         // ];
 
+        $dot_background_color = flexqr_valid_input($_POST['dot_background_color']) ?? '#ff0000';
+
+        $eye_color = flexqr_valid_input($_POST['eye_color']) ?? '#4dff00';
+
         // Get the selected version from the form
         $version = (int)$_POST['version'];
        
         // Function to prepare options for different formats
         // function prepareOptions($outputInterface, $dotColors, $version, $circleRadius, $drawCircularModules) {
-           
-        $options = new QROptions;
-        // print_r($data) ;
+        
+        $colors = [
+            // finder
+            // QRMatrix::M_FINDER_DARK    => $eye_color, // dark (true)//eye color
+            // // QRMatrix::M_FINDER_DOT     => $_POST['eye_color'], // finder dot, dark (true) eye color
+            // // QRMatrix::M_FINDER         => $eye_color, // light (false), eye color
+            // // alignment
+            // // QRMatrix::M_ALIGNMENT_DARK => $eye_color, //center eye color
+            // // QRMatrix::M_ALIGNMENT      => $eye_color,//center eye inner color
+            // // timing
+            // QRMatrix::M_TIMING_DARK    => $dot_background_color, //center line dot color    
+            // // QRMatrix::M_TIMING         => $dot_background_color,
+            // // format
+            // // QRMatrix::M_FORMAT_DARK    => $dot_background_color,
+            // QRMatrix::M_FORMAT         => $dot_background_color,
+            // version
+            // QRMatrix::M_VERSION_DARK   => $dot_background_color,
+            // QRMatrix::M_VERSION        => $dot_background_color,
+            // data
+            // QRMatrix::M_DATA_DARK      => $dot_background_color, //dot_color
+            // QRMatrix::M_DATA           => $dot_background_color,
+            // darkmodule
+            // QRMatrix::M_DARKMODULE     => $dot_background_color,
+            // separator
+            // QRMatrix::M_SEPARATOR      => $dot_background_color,
+            // quietzone
+            // QRMatrix::M_QUIETZONE      => $_POST['background_color'], //background_color
+            // logo (requires a call to QRMatrix::setLogoSpace()), see QRImageWithLogo
+            // QRMatrix::M_LOGO           => '#b105f0',
 
-        $options->version             = 7;
-        $options->outputInterface     = QRGdImagePNG::class;
-        $options->scale               = 20;
-        $options->outputBase64        = false;
-        $options->bgColor             = [232, 201, 0];
-        $options->imageTransparent    = true;
+            1536 => 'url(#gradient)', // finder
+            6    => '#39FFFF', // dark (data)
+            8    => 'url(#gradient)', // alignment
+            2560 => '#c91414', // format
+            10   => 'url(#gradient)', // version
+            ];
+
+        $options = new QROptions;
+        // echo 'vbcvb'.$this->background_color;
+
+        $options->version             = 5;
+        $options->eccLevel            = EccLevel::H;
+        // $options->imageBase64          = true;
+        // $options->addLogoSpace          = true;
+        // $options->logoSpaceHeight      = 17;
+        // $options->logoSpaceWidth        = 17;
+        $options->outputInterface     = QRMarkupSVG::class;
+        // $options->outputType            = QRMarkupSVG::class;
+        $options->scale               = 10;
+        // $options->outputBase64        = true;
+        // $options->readerUseImagickIfAvailable = true;
+        // $options->readerIncreaseContrast      = true;
+        // $options->readerGrayscale             = true;
+        // $options->bgColor             = [232, 201, 0];
+        // $options->imageTransparent    = true;
         #$options->transparencyColor   = [233, 233, 233];
-        $options->drawCircularModules = false;
-        $options->drawLightModules    = true;
+        $options->drawCircularModules = true;
+        $options->drawLightModules    = false;
         $options->circleRadius        = 0.4;
+        // $options->outputType          = QRCode::OUTPUT_MARKUP_SVG;
         // $options->keepAsSquare        = [
         //     QRMatrix::M_FINDER_DARK,
         //     QRMatrix::M_FINDER_DOT,
         //     QRMatrix::M_ALIGNMENT_DARK,
         // ];
-        $options->moduleValues        = [
-            // finder
-            QRMatrix::M_FINDER_DARK    => '$this->eye_color', // dark (true)//eye color
-            QRMatrix::M_FINDER_DOT     => '$this->eye_color', // finder dot, dark (true) eye color
-            QRMatrix::M_FINDER         => '$this->eye_color', // light (false), eye color
-            // alignment
-            QRMatrix::M_ALIGNMENT_DARK => '$this->eye_color', //center eye color
-            QRMatrix::M_ALIGNMENT      => '$this->eye_color',//center eye inner color
-            // timing
-            QRMatrix::M_TIMING_DARK    => '$this->dot_color', //center line dot color    
-            QRMatrix::M_TIMING         => '$this->dot_color',
-            // format
-            QRMatrix::M_FORMAT_DARK    => '$this->dot_color',
-            QRMatrix::M_FORMAT         => '$this->dot_color',
-            // version
-            QRMatrix::M_VERSION_DARK   => '$this->dot_color',
-            QRMatrix::M_VERSION        => '$this->dot_color',
-            // data
-            QRMatrix::M_DATA_DARK      => '$this->dot_color', //dot_color
-            QRMatrix::M_DATA           => '$this->dot_color',
-            // darkmodule
-            QRMatrix::M_DARKMODULE     => '$this->dot_color',
-            // separator
-            QRMatrix::M_SEPARATOR      => '$this->dot_color',
-            // quietzone
-            QRMatrix::M_QUIETZONE      => '$this->background_color', //background_color
-            // logo (requires a call to QRMatrix::setLogoSpace()), see QRImageWithLogo
-            QRMatrix::M_LOGO           => '#b105f0',
-        ];
-
-
-        // $options = new QROptions([
-        //         'version'             => $version,
-        //         'outputInterface'     => QRGdImagePNG::class,
-        //         'scale'               => 20,
-        //         'outputBase64'        => false,
-        //         'bgColor'             => [200, 150, 200],
-        //         'imageTransparent'    => true,
-        //         // 'eccLevel'            => EccLevel::H,
-        //         'addQuietzone'        => true,                
-        //         'drawLightModules'    => true,
-        //         // 'connectPaths'        => true,
-        //         'drawCircularModules' => true,
-        //         'circleRadius'        => $this->circleRadius,
-        //         'keepAsSquare'        => [
-        //                                     QRMatrix::M_FINDER_DARK,
-        //                                     QRMatrix::M_FINDER_DOT,
-        //                                     QRMatrix::M_ALIGNMENT_DARK,
-        //                                 ],                
-        //         'moduleValues'        => [
-        //             /// finder
-        //             QRMatrix::M_FINDER_DARK    => [0, 63, 255], // dark (true)
-        //             QRMatrix::M_FINDER_DOT     => [0, 63, 255], // finder dot, dark (true)
-        //             QRMatrix::M_FINDER         => [0, 128, 0], // light (false), white is the transparency color and is enabled by default
-        //             // alignment
-        //             QRMatrix::M_ALIGNMENT_DARK => [255, 0, 255],
-        //             QRMatrix::M_ALIGNMENT      => [233, 233, 233],
-        //             // timing
-        //             QRMatrix::M_TIMING_DARK    => [255, 0, 0],
-        //             QRMatrix::M_TIMING         => [233, 233, 233],
-        //             // format
-        //             QRMatrix::M_FORMAT_DARK    => [67, 159, 84],
-        //             QRMatrix::M_FORMAT         => [233, 233, 233],
-        //             // version
-        //             QRMatrix::M_VERSION_DARK   => [62, 174, 190],
-        //             QRMatrix::M_VERSION        => [233, 233, 233],
-        //             // data
-        //             QRMatrix::M_DATA_DARK      => [0, 0, 0],
-        //             QRMatrix::M_DATA           => [233, 233, 233],
-        //             // darkmodule
-        //             QRMatrix::M_DARKMODULE     => [0, 0, 0],
-        //             // separator
-        //             QRMatrix::M_SEPARATOR      => [233, 233, 233],
-        //             // quietzone
-        //             QRMatrix::M_QUIETZONE      => [233, 233, 233],
-        //             // logo (requires a call to QRMatrix::setLogoSpace()), see QRImageWithLogo
-        //             QRMatrix::M_LOGO           => [233, 233, 233],        
-        //             ]]);
-
-            // return $options;
-        // }
+        $options->connectPaths        = true;
+        $options->svgOpacity          = 1.0;
+        $options->svgDefs             = '
+            <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" style="stop-color:#39FFFF;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#F3FFFF;stop-opacity:1" />
+            </linearGradient>
+        ';
+        $options->svgClass            = 'my-qr-code';
+        $options->svgViewBox          = null;
+        $options->moduleValues        = $colors;        
 
         // Get the selected output format from the form
-        $qr_code_format = $this->format;
+        // $qr_code_format = $this->format;
 
         // Determine the output interface based on the selected format
-        switch ($qr_code_format) {
-            case 'svg':
-                $outputInterface = QRMarkupSVG::class;
-                $contentType = 'image/svg+xml';
-                break;
-            case 'png':
-                $outputInterface = QRGdImagePNG::class;
-                $contentType = 'image/png';
-                break;
-            case 'jpeg':
-                $outputInterface = QRGdImageJPEG::class;
-                $contentType = 'image/jpeg';
-                break;
-            case 'eps':
-                $outputInterface = QREps::class;
-                $contentType = 'application/postscript';
-                break;
-            case 'xml':
-                $outputInterface = QRMarkupXML::class;
-                $contentType = 'application/xml';
-                break;
+        // switch ($qr_code_format) {
+        //     case 'svg':
+        //         $outputInterface = QRMarkupSVG::class;
+        //         $contentType = 'image/svg+xml';
+        //         break;
+        //     case 'png':
+        //         $outputInterface = QRGdImagePNG::class;
+        //         $contentType = 'image/png';
+        //         break;
+        //     case 'jpeg':
+        //         $outputInterface = QRGdImageJPEG::class;
+        //         $contentType = 'image/jpeg';
+        //         break;
+        //     case 'eps':
+        //         $outputInterface = QREps::class;
+        //         $contentType = 'application/postscript';
+        //         break;
+        //     case 'xml':
+        //         $outputInterface = QRMarkupXML::class;
+        //         $contentType = 'application/xml';
+        //         break;
             // default:
             //     $outputInterface = QRMarkupSVG::class;
             //     $contentType = 'image/svg+xml';
-        }
+        // }
 
         // Prepare the options for the selected output format
         // $options = prepareOptions($outputInterface, $dotColors, $version, $this->circleRadius, $this->drawCircularModules);
@@ -268,10 +245,11 @@ if (!class_exists('FlexQr_QRCode')) {
         // Data to encode
         // $data = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
+        // echo 'sdfds' . $_POST['qr_code_text'];
+
         // Generate the QR Code
-        $qrOut = (new QRCode($options))->render($this->qr_text);
-//  echo 'rtyrt'.$this->dataLight;
-        header('Content-type: image/png');
+        $qrOut = (new QRCode($options))->render($_POST['qr_code_text']);
+        // header('Content-type: image/png');
 
         // if(PHP_SAPI !== 'cli'){
         //     // if viewed in the browser, we should push it as file download as EPS isn't usually supported
