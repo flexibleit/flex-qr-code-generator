@@ -66,7 +66,7 @@ if (!function_exists('flexqr_display_generator_form')) {
 
    //  echo '<br><br>';
     // echo '<tr><td><label for="qr_code_color">Select QR code color:</label></td>';
-   echo '<td><input type="color" id="qr_code_color" name="qr_code_color" style=" display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; "></td></tr>';
+  //  echo '<td><input type="color" id="qr_code_bg_color" name="qr_code_bg_color" style=" display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; "></td></tr>';
    ?>
     <!-- <tr><td><label for="finderDark">Finder Pattern Color (Dark):</label></td>
     <td><input type="color" id="finderDark" name="finderDark" value="#000000"></td></tr>
@@ -80,8 +80,8 @@ if (!function_exists('flexqr_display_generator_form')) {
     <tr><td><label for="eye_color">Eye Color:</label></td>
     <td><input type="color" id="eye_color" name="eye_color"></td></tr>
 
-    <tr><td><label for="dot_background_color">Dot Background Color:</label></td>
-    <td><input type="color" id="dot_background_color" name="dot_background_color"></td></tr>
+    <tr><td><label for="dot_color">Dot Color:</label></td>
+    <td><input type="color" id="dot_color" name="dot_color"></td></tr>
 
     <!-- <tr><td><label for="background_color">background_color:</label></td>
     <td><input type="color" id="background_color" name="background_color"></td></tr> -->
@@ -94,14 +94,14 @@ if (!function_exists('flexqr_display_generator_form')) {
     </select><br><br>
     
     
-    <label for="circleRadius">Circle Radius (0.2 to 0.75):</label>
-    <input type="number" id="circleRadius" name="circleRadius" min="0.2" max="0.75" step="0.05" value="0.4"><br><br>
+    <label for="circleRadius">Circle Radius (0.5 to 0.75):</label>
+    <input type="number" id="circleRadius" name="circleRadius" min="0.5" max="0.75" step="0.05" value="0.5"><br><br>
 
-    <label for="drawCircularModules">Draw Circular Modules:</label><br>        
-        <input type="radio" id="image1" name="drawCircularModules" value="1">
-        <label for="image1"><img src="<?php echo plugin_dir_url(__FILE__); ?>../dot.png" alt="Image 1" class="module-preview"></label><br>
-        <input type="radio" id="image2" name="drawCircularModules" value="0" checked>
-        <label for="image2"><img src="<?php echo plugin_dir_url(__FILE__); ?>../round.png" alt="Image 2" class="module-preview"></label><br><br>
+    <tr><td><label for="drawCircularModules">Draw Circular Modules:</label></td>    
+        <td><input style="width: 1px;" type="radio" id="image1" name="drawCircularModules" value="1">
+        <label for="image1"><img src="<?php echo plugin_dir_url(__FILE__); ?>../dot.png" alt="Image 1" class="module-preview"></label></td>
+        <td><input style="width: 1px;" type="radio" id="image2" name="drawCircularModules" value="0" checked>
+        <label for="image2"><img src="<?php echo plugin_dir_url(__FILE__); ?>../round.png" alt="Image 2" class="module-preview"></label></td></tr>
 
    <?php
    echo '<tr><td><label for="qr_code_size">Size(150 X 150):</label></td>';

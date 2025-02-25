@@ -101,20 +101,20 @@ function flexqr_activate_code_generator_plugin() {
  
  // Handle the AJAX request
 function qr_code_generator_ajax() {
-  if ( isset( $_POST['qr_code_text'] ) && isset( $_POST['qr_code_color'] ) ) {
-    $qr_code_text = flexqr_valid_input( $_POST['qr_code_text'] );
-    $qr_code_color = flexqr_valid_input( $_POST['qr_code_color']);
-    $qr_code_options='';
-    if (!empty($qr_code_color )) {
-      list($r, $g, $b) = sscanf($qr_code_color, "#%02x%02x%02x");
-      $qr_code_options.= '&color='.$r.'-'. $g.'-'. $b;
-    }
-    $qr_code_format = flexqr_valid_input( $_POST['qr_code_format'] );
-    if (!empty($qr_code_format)) $qr_code_options.= '&format='.$qr_code_format;
-    $qr_code_size =  flexqr_valid_input($_POST['qr_code_size'], true);
-    if (!empty($qr_code_size)) $qr_code_options.= '&size='.$qr_code_size;
-    $qr_code_margin =  flexqr_valid_input($_POST['qr_code_margin'], true);
-    if (!empty($qr_code_margin)) $qr_code_options.= '&margin='.$qr_code_margin;
+  if ( isset( $_POST['qr_code_text'] ) ) {
+    // $qr_code_text = flexqr_valid_input( $_POST['qr_code_text'] );
+    // $qr_code_color = flexqr_valid_input( $_POST['qr_code_color']);
+    // $qr_code_options='';
+    // if (!empty($qr_code_color )) {
+    //   list($r, $g, $b) = sscanf($qr_code_color, "#%02x%02x%02x");
+    //   $qr_code_options.= '&color='.$r.'-'. $g.'-'. $b;
+    // }
+    // $qr_code_format = flexqr_valid_input( $_POST['qr_code_format'] );
+    // if (!empty($qr_code_format)) $qr_code_options.= '&format='.$qr_code_format;
+    // $qr_code_size =  flexqr_valid_input($_POST['qr_code_size'], true);
+    // if (!empty($qr_code_size)) $qr_code_options.= '&size='.$qr_code_size;
+    // $qr_code_margin =  flexqr_valid_input($_POST['qr_code_margin'], true);
+    // if (!empty($qr_code_margin)) $qr_code_options.= '&margin='.$qr_code_margin;
 
     // $qrCode = $qrCodeGenerator->generateQRCode();
     $uploads = wp_upload_dir();
@@ -123,22 +123,7 @@ function qr_code_generator_ajax() {
         $uploaded_logo = wp_handle_upload($_FILES['input_logo'], ['test_form' => false]);
         
     }
-     $qrCodeGenerator = new FlexQr_QRCode([
-                // 'qr_text' => $qr_code_text,
-                // 'qr_text' => $_POST['qr_code_text'],
-                // 'eye_color' => $_POST['eye_color'],
-                // 'dot_color' => $_POST['dot_color'],
-                // 'background_color' => $_POST['background_color'],
-                // 'dot_color' => $qr_code_color,
-                // 'qr_style' => $_POST['qr_style'],
-                // 'size' => $qr_code_size,
-                // 'margin' => $qr_code_margin,
-                // 'format' => $qr_code_format,
-                // 'input_logo' => $uploaded_logo['url'] ?? null,
-                // 'drawCircularModules' => $_POST['drawCircularModules'],
-                // 'dataLight' => $_POST['dataLight'] ?? null,
-
-              ]);
+     $qrCodeGenerator = new FlexQr_QRCode();
     $qr_code_format = $qrCodeGenerator->generate(true);
       $response = [
         'qrCode' => $qr_code_format,
