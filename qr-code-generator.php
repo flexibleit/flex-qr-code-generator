@@ -42,6 +42,7 @@ function flexqr_code_generator_scripts() {
   wp_enqueue_style( 'flexqr-code-generator-style', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.css', array(), '1.1.7' );
   wp_enqueue_script( 'flexqr-code-generator-script', FLEXQR_CODE_GENERATOR_URI . 'flexqr-code-generator.js', array( 'jquery' ) );
   wp_enqueue_script( 'jquery-script', "https://code.jquery.com/jquery-3.6.4.min.js", array( 'jquery' ), true );
+  wp_enqueue_script('admin-js', plugins_url('spa/build/admin.js', __FILE__), [], '1.0', true);
 }
 add_action( 'admin_enqueue_scripts', 'flexqr_code_generator_scripts' );
 
