@@ -120,7 +120,9 @@ if (!function_exists('flexqr_display_generator_form')) {
    echo '</form>';  
 
    echo '<div id="qrCodeOutput"></div>';
-  //  echo '<div id="qrCodeOutput_1"></div>';
+
+   echo '<div id="ReactCodeOutput"></div>';
+  
 
  }
 }
