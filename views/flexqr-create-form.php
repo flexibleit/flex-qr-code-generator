@@ -121,7 +121,7 @@ if (!function_exists('flexqr_display_generator_form')) {
 
    echo '<div id="qrCodeOutput"></div>';
 
-   echo '<div id="ReactCodeOutput"></div>';
+   echo '<div class="flex-qr-code-wrapper"><div id="flex_qr_code_input"></div></div>';
   
 
  }

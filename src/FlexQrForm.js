@@ -1,23 +1,6 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
 
-// const FlexQRCodeForm = () => {
-//     const [qrCodeText, setQrCodeText] = useState('');
-//     const [qrCodeSize, setQrCodeSize] = useState('');
-//     const [eyeColor, setEyeColor] = useState('');
-//     const [dotColor, setDotColor] = useState('');
-//     const [circleRadius, setCircleRadius] = useState(0.5);
-//     const [version, setVersion] = useState(7);
-//     const [qrCodeFormat, setQrCodeFormat] = useState('png');
-//     const [qrCodeMargin, setQrCodeMargin] = useState('');
-//     const [selectedInput, setSelectedInput] = useState('');
-    
-//     const handleSubmit = (event) => {
-//       event.preventDefault();
-//       // Handle the form submission logic here (e.g., send data via AJAX)
-//     };
-
-const Admin = () => {
+const FlexQrForm = () => {
 
     const [qrCodeText, setQrCodeText] = useState('');
     const [qrCodeSize, setQrCodeSize] = useState('');
@@ -111,8 +94,4 @@ const Admin = () => {
     )
 }
 
-export default Admin();
-
-ReactDOM.createRoot(document.getElementById( 'flex-qr-code-form')).render(
-    <Admin/>
-);
+export default FlexQrForm;
