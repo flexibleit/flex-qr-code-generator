@@ -5,7 +5,7 @@
 
 if (!function_exists('flexqr_display_generator_form')) {
   function flexqr_display_generator_form() {
-    echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post" id="qrForm">';?>
+    /* echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post" id="qrForm">';?>
     <input type="hidden" name="action" value="flexqr_generate_qr">
             <?php wp_nonce_field('qrcode_nonce', 'qrcode_nonce'); 
     echo '<table><tr><td><label for="flexqrcode_code_text">Enter text to encode in QR code:</label></td>';  
@@ -120,8 +120,8 @@ if (!function_exists('flexqr_display_generator_form')) {
    echo '</form>';  
 
    echo '<div id="qrCodeOutput"></div>';
-
-   echo '<div class="flex-qr-code-wrapper"><div id="flex_qr_code_input"></div></div>';
+*/
+   
   
 
  }
@@ -156,10 +156,10 @@ function flexqr_code_generator_options() {
   // Display the plugin options page
   echo '<div class=" wrap"><h2 class="wrap-container"></h2>';
   include_once "flexqr-top-header.php";
-
-  echo '<div class="flex-qr-code-form"><h3>Create QR Code </h3>';
-  echo '<p>You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own.</p>';
-  flexqr_display_generator_form();
+  echo '<div class="flex-qr-code-wrapper"><div id="flex_qr_code_input"></div></div>';
+  // echo '<div class="flex-qr-code-form"><h3>Create QR Code </h3>';
+  // echo '<p>You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own.</p>';
+  // flexqr_display_generator_form();
   // flexqr_generate_qr_code();
 
   echo '</div>';

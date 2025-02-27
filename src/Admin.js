@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import FlexQrForm from "./FlexQrForm";
+import CreateQrForm from "./CreateQrForm";
 
 
 ReactDOM.createRoot(document.getElementById("flex_qr_code_input")).render(
     <React.StrictMode>
-        <FlexQrForm />
+        <CreateQrForm />
     </React.StrictMode>
 );

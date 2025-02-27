@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/FlexQrForm.js":
-/*!***************************!*\
-  !*** ./src/FlexQrForm.js ***!
-  \***************************/
+/***/ "./src/CreateQrForm.js":
+/*!*****************************!*\
+  !*** ./src/CreateQrForm.js ***!
+  \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -15,7 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-const FlexQrForm = () => {
+const CreateQrForm = () => {
   const [qrCodeText, setQrCodeText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [qrCodeSize, setQrCodeSize] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [eyeColor, setEyeColor] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
@@ -32,7 +32,14 @@ const FlexQrForm = () => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex-qr-code-form",
     id: "flex-qr-code-form"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Create QR Code "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
+    className: "text-lg text-black font-bold my-3"
+  }, "Create QR Code "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "You can create QR code for any texts or links. There is option to select page, post or product link. You can select easily from dropdown. Here is also options for select QR code color, size, format and margin. After creating you can see the qr code under table. You can easily copy the Qr code and share it as your own."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-2/3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    className: "my-5",
     action: "/Wordpress/wp-admin/admin.php?page=flexqr-code-generator",
     method: "post",
     id: "qrForm",
@@ -50,13 +57,17 @@ const FlexQrForm = () => {
     type: "hidden",
     name: "_wp_http_referer",
     value: "/Wordpress/wp-admin/admin.php?page=flexqr-code-generator"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    for: "version"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "my-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    for: "countries",
+    class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
   }, "Select QR Code Version:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
     id: "version",
     name: "version",
     value: version,
-    onChange: e => setVersion(e.target.value)
+    onChange: e => setVersion(e.target.value),
+    class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
     value: "7"
   }, "7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
@@ -65,7 +76,7 @@ const FlexQrForm = () => {
     value: "9"
   }, "9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
     value: "10"
-  }, "10")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  }, "10"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "circleRadius"
   }, "Circle Radius (0.5 to 0.75):"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "number",
@@ -288,11 +299,13 @@ const FlexQrForm = () => {
       margin: "8px 0"
     },
     value: "Generate QR Code"
-  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-1/3"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "qrCodeOutput"
   })));
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FlexQrForm);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateQrForm);
 
 /***/ }),
 
@@ -395,11 +408,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _FlexQrForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FlexQrForm */ "./src/FlexQrForm.js");
+/* harmony import */ var _CreateQrForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateQrForm */ "./src/CreateQrForm.js");
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.createRoot(document.getElementById("flex_qr_code_input")).render(/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_FlexQrForm__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
+react_dom__WEBPACK_IMPORTED_MODULE_1__.createRoot(document.getElementById("flex_qr_code_input")).render(/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CreateQrForm__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
 })();
 
 /******/ })()
