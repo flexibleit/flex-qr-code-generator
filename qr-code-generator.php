@@ -101,7 +101,10 @@ class FlexQrCodeGenerator {
    }
 
    function qr_code_generator_ajax() {
+    
+    
     if ( isset( $_POST['qr_code_text'] ) ) {
+      // echo json_encode($_POST);exit;
       // $qr_code_text = flexqr_valid_input( $_POST['qr_code_text'] );
       // $qr_code_color = flexqr_valid_input( $_POST['qr_code_color']);
       // $qr_code_options='';

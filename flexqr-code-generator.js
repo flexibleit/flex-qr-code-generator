@@ -46,22 +46,21 @@ jQuery(document).ready(function($){
 });
 
 jQuery(document).ready(function($) {
-   $('#qrForm').on('submit', function(event) {
-       event.preventDefault();
-       var formData = new FormData(this);
-       $.ajax({
-           url: ajaxurl,
-           type: 'POST',
-           data: formData,
-           processData: false,
-           contentType: false,
-           success: function(response) {
-               $('#qrCodeOutput').html('<img src="' + response.qrCode + '" alt="QR Code">');
-               // $('#qrCodeOutput_1').html(response.qrCode);
-           },
-           error: function(xhr, status, error) {
-               console.error('AJAX Error: ' + status + error);
-           }
-       });
-   });
+   // $('#qrForm').on('submit', function(event) {
+   //     event.preventDefault();
+   //     var formData = new FormData(this);
+   //     $.ajax({
+   //         url: ajaxurl,
+   //         type: 'POST',
+   //         data: formData,
+   //         processData: false,
+   //         contentType: false,
+   //         success: function(response) {
+   //             // $('#qrCodeOutput').html('<img src="' + response.qrCode + '" alt="QR Code">');               
+   //         },
+   //         error: function(xhr, status, error) {
+   //             console.error('AJAX Error: ' + status + error);
+   //         }
+   //     });
+   // });
 });
