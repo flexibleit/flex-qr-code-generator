@@ -3,37 +3,37 @@
    "version": "1.1.0",
    "description": "",
    "scripts": {
-     "preview": "npm-run-all --parallel sync wpstart tailwindwatch",
-     "sync": "browser-sync start -p 'myexample.local' --files '**/*.php' 'build/*.js' 'build/*.css'",
-     "build": "npm-run-all --sequential buildwp tailwindbuild",
-     "buildwp": "wp-scripts build src/admin.js",
-     "wpstart": "wp-scripts start src/admin.js",
-     "start": "npm-run-all --parallel wpstart tailwindwatch",
-     "tailwindbuild": "tailwindcss -i ./src/index.css -o ./build/index.css --postcss --minify",
-     "tailwindwatch": "tailwindcss -i ./src/index.css -o ./build/index.css --watch --postcss --minify",
-     "test": "echo \"Error: no test specified\" && exit 1"
+      "preview": "npm-run-all --parallel sync wpstart tailwindwatch",
+      "sync": "browser-sync start -p 'myexample.local' --files '**/*.php' 'build/*.js' 'build/*.css'",
+      "build": "npm-run-all --sequential buildwp tailwindbuild",
+      "buildwp": "wp-scripts build src/admin.js",
+      "wpstart": "wp-scripts start src/admin.js",
+      "start": "npm-run-all --parallel wpstart tailwindwatch",
+      "tailwindbuild": "tailwindcss -i ./src/index.css -o ./build/index.css --postcss --minify",
+      "tailwindwatch": "tailwindcss -i ./src/index.css -o ./build/index.css --watch --postcss --minify",
+      "test": "echo \"Error: no test specified\" && exit 1"
    },
    "keywords": [],
    "author": "",
    "license": "ISC",
    "devDependencies": {
-     "@babel/preset-react": "^7.25.9",
-     "@wordpress/scripts": "^30.3.0",
-     "autoprefixer": "^10.4.7",
-     "browser-sync": "^2.27.10",
-     "npm-run-all": "^4.1.5",
-     "postcss": "^8.4.14",
-     "postcss-nested": "^5.0.6",
-     "tailwindcss": "^3.1.4"
+      "@babel/preset-react": "^7.25.9",
+      "@tailwindcss/forms": "^0.5.10",
+      "@wordpress/scripts": "^30.3.0",
+      "autoprefixer": "^10.4.7",
+      "browser-sync": "^2.27.10",
+      "npm-run-all": "^4.1.5",
+      "postcss": "^8.4.14",
+      "postcss-nested": "^5.0.6",
+      "tailwindcss": "^3.1.4"
    },
    "dependencies": {
-     "axios": "^1.7.7",
-     "browser-sync": "^3.0.3",
-     "react": "^18.3.1",
-     "react-dom": "^18.3.1",
-     "react-icons": "^5.0.1",
-     "react-router-dom": "^6.27.0",
-     "react-select": "^5.8.0"
+      "axios": "^1.7.7",
+      "browser-sync": "^3.0.3",
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1",
+      "react-icons": "^5.0.1",
+      "react-router-dom": "^6.27.0",
+      "react-select": "^5.8.0"
    }
- }
- 
+}
