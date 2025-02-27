@@ -11,6 +11,7 @@ const CreateQrForm = () => {
     const [qrCodeFormat, setQrCodeFormat] = useState('png');
     const [qrCodeMargin, setQrCodeMargin] = useState('');
     const [selectedInput, setSelectedInput] = useState('');
+    const [drawCircularModules, setDrawCircularModules] = useState(false);
     
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -88,18 +89,15 @@ const CreateQrForm = () => {
                                     <input type="color" id="dot_color" name="dot_color" value={dotColor} onChange={(e) => setDotColor(e.target.value)} class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700" title="Choose your color"></input>
                                 </div>
                             </div>
-                            <div className="my-4 flex">
-                                <div className="w-1/5 ">
+                            <div className="my-4 ">
+                                <div className="">
                                     <label for="drawCircularModules" class="block text-sm font-medium mb-2 dark:text-black">Draw Circular Modules:</label> 
                                 </div>
-                                <div className="w-2/5 ">
-                                    {/* <input style={{width: "1px"}} id="image1" name="drawCircularModules" value="1"/>
-                                    <label for="image1"><img src="http://localhost/Wordpress/wp-content/plugins/flex-qr-code-generator-pro/views/../dot.png" alt="Image 1" className="module-preview"/></label> */}
-                                    <img class="border border-gray-200" onClick={} src="http://localhost/Wordpress/wp-content/plugins/flex-qr-code-generator-pro/views/../dot.png" alt="Image 1" className="module-preview" id="image1" name="drawCircularModules" value="1"/>
-                                </div>
-                                <div className="w-2/5 ">                                
-                                    <input style={{width: "1px"}} id="image2" name="drawCircularModules" value="0" checked=""/>
-                                    <label for="image2"><img src="http://localhost/Wordpress/wp-content/plugins/flex-qr-code-generator-pro/views/../round.png" alt="Image 2" className="module-preview"/></label>
+                                <div className="flex gap-2 ">
+                                    <div className={ `w-24 cursor-pointer ${drawCircularModules ? "" : "border-4 border-blue-500"}`} onClick={()=>setDrawCircularModules(false)}><img src={`${FLEXQR_CODE_GENERATOR_URI}/dot.png`} alt="Image 1" className="module-preview w-full" id="image1" /></div>
+                                                     
+                                    <div className={ `w-24 cursor-pointer ${drawCircularModules ? "border-4 border-blue-500" : ""}`} onClick={()=>setDrawCircularModules(true)}>
+                                    <img src={`${FLEXQR_CODE_GENERATOR_URI}/round.png`} alt="Image 2" className="w-full module-preview"/></div>
                                 </div>
                             </div>
                             <tr><td><label for="qr_code_size">Size(150 X 150):</label></td><td><input type="number" id="qr_code_size" name="qr_code_size" style={{padding: "6px 20px", margin: "8px 0", display: "inline-block", border: "1px solid #ccc", borderRadius: "4px", boxSizing: "border-box", width: "300px"}} value={qrCodeSize} onChange={(e) => setQrCodeSize(e.target.value)}/></td></tr><tr><td><label for="qr_code_format">QR Format:</label></td><td><select id="qr_code_format" name="qr_code_format" style={{padding: "6px 20px", margin: "8px 0", display: "inline-block", border: "1px solid #ccc", borderRadius: "4px", boxSizing: "border-box", width: "300px"}}  value={qrCodeFormat} onChange={(e) => setQrCodeFormat(e.target.value)}>
