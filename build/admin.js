@@ -21,13 +21,19 @@ const CreateQrForm = () => {
   const [eyeColor, setEyeColor] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#2563eb');
   const [dotColor, setDotColor] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#25eb3c');
   const [circleRadius, setCircleRadius] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0.5);
-  const [version, setVersion] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(7);
-  const [qrCodeFormat, setQrCodeFormat] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('png');
+  // const [version, setVersion] = useState(7);
+  // const [qrCodeFormat, setQrCodeFormat] = useState('png');
   const [qrCodeMargin, setQrCodeMargin] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('100');
   const [selectedInput, setSelectedInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [drawCircularModules, setDrawCircularModules] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [qrCodeOutput, setQrCodeOutput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [file, setFile] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  function handleFileChange(e) {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  }
   const handleSubmit = async event => {
     event.preventDefault();
     // return;
@@ -39,11 +45,12 @@ const CreateQrForm = () => {
     formData.append("eye_color", eyeColor);
     formData.append("dot_color", dotColor);
     formData.append("circleRadius", circleRadius);
-    formData.append("version", version);
-    formData.append("qr_code_format", qrCodeFormat);
+    // formData.append("version", version);
+    // formData.append("qr_code_format", qrCodeFormat);
     formData.append("qr_code_margin", qrCodeMargin);
     formData.append("qr_code_input", selectedInput);
     formData.append("drawCircularModules", drawCircularModules ? 1 : 0);
+    formData.append("qr_code_logo", file);
     formData.append("action", 'flexqr_generate_qr');
     try {
       // Make the AJAX request
@@ -180,27 +187,8 @@ const CreateQrForm = () => {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
     value: ""
   }, "Select Product"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "my-4 flex"
+    className: "my-4 flex gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    for: "countries",
-    class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-  }, "QR Code Version:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
-    id: "version",
-    name: "version",
-    value: version,
-    onChange: e => setVersion(e.target.value),
-    class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "7"
-  }, "7"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "8"
-  }, "8"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "9"
-  }, "9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "10"
-  }, "10"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "pl-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "number-input",
     class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
   }, "Circle Radius (0.5 to 0.75):"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
@@ -215,9 +203,7 @@ const CreateQrForm = () => {
     "aria-describedby": "helper-text-explanation",
     class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
     required: true
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "pl-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "hs-color-input",
     class: "block text-sm font-medium mb-2 dark:text-black"
   }, "Eye Color:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
@@ -228,9 +214,7 @@ const CreateQrForm = () => {
     onChange: e => setEyeColor(e.target.value),
     class: "p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700",
     title: "Choose your color"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "pl-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "hs-color-input",
     class: "block text-sm font-medium mb-2 dark:text-black"
   }, "Dot Color:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
@@ -241,9 +225,7 @@ const CreateQrForm = () => {
     onChange: e => setDotColor(e.target.value),
     class: "p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700",
     title: "Choose your color"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "pl-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "drawCircularModules",
     class: "block text-sm font-medium mb-2 dark:text-black"
   }, "Draw Circular Modules:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -264,8 +246,8 @@ const CreateQrForm = () => {
     alt: "Image 2",
     className: "w-full module-preview"
   }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "my-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "my-4 flex gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "number-input",
     class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
   }, "Size(150 X 150):"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
@@ -277,30 +259,7 @@ const CreateQrForm = () => {
     "aria-describedby": "helper-text-explanation",
     class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
     required: true
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "my-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    for: "countries",
-    class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-  }, "QR Format::"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
-    id: "qr_code_format",
-    name: "qr_code_format",
-    value: qrCodeFormat,
-    onChange: e => setQrCodeFormat(e.target.value),
-    class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "png"
-  }, "png"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "gif"
-  }, "gif"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "jpg"
-  }, "jpg"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "svg"
-  }, "svg"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
-    value: "eps"
-  }, "eps"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "my-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     for: "number-input",
     class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
   }, "Margin:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
@@ -313,7 +272,15 @@ const CreateQrForm = () => {
     "aria-describedby": "helper-text-explanation",
     class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
     required: true
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white",
+    for: "file_input"
+  }, "Upload Logo"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    onChange: handleFileChange,
+    class: "block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400",
+    id: "qr_code_logo",
+    type: "file"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "my-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "submit",

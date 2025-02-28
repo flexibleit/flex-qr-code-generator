@@ -5,27 +5,28 @@ declare(strict_types=1);
 use chillerlan\QRCode\{QRCode, QROptions};
 use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Data\QRMatrix;
-use chillerlan\QRCode\Output\{QRMarkupSVG, QRGdImage, QRGdImagePNG, QRInterventionImage, QRMarkupXML};
+use chillerlan\QRCode\Output\{QRMarkupSVG, QRGdImage, QRGdImagePNG, QRCodeOutputException, QRInterventionImage, QRMarkupXML};
 use chillerlan\QRCode\Output\QRGdImageJPEG;
 use chillerlan\QRCode\Output\QREps;
 
 if (!class_exists('FlexQr_QRCode')) {
 
-   class FlexQr_QRCode {
-      private $qr_text;
-      public $eye_color;
-      public $dot_color;
-      public $version;
-      public $qr_code_bg_color;
-      private $dot_background_color;
-      private $qr_style;
-      private $size;
-      private $margin;
-      private $format;
-      private $logo_path;
-      private $draw_circular_modules;
-      private $circleRadius;
-    //   private $background_color;
+    class FlexQr_QRCode {
+    private $qr_text;
+    public $eye_color;
+    public $dot_color;
+//   public $version;
+//   public $qr_code_bg_color;
+    private $dot_background_color;
+    private $qr_style;
+    private $size;
+    private $margin;
+    public $qrCodeSize;
+//   private $format;
+    private $logo_path;
+    private $draw_circular_modules;
+    private $circleRadius;
+    public $qr_code_logo;
 
       public function __construct($data=[]) {
         if (empty($data)) {
@@ -35,33 +36,33 @@ if (!class_exists('FlexQr_QRCode')) {
          $this->qr_text = $data['qr_code_text'] ?? 'Flex Qr Code Generagor By devsbrain';
          $this->eye_color = $data['eye_color'] ?? '#000000';
          $this->dot_color = $data['dot_color'] ?? '#000000';
-         $this->version = $data['version'] ?? 5;
+        //  $this->version = $data['version'] ?? 7;
          // $this->qrStyle = $data['qr_style'] ?? 'square';
         //  $this->size = (int) ($data['size'] ?? 300);
+        $this->qrCodeSize = (int) ($data['qr_code_size'] ?? 150);
         //  $this->margin = (int) ($data['margin'] ?? 10);
-         $this->format = $data['format'] ?? 'png';
+        //  $this->format = $data['format'] ?? 'png';
          // $this->inputLogo = $data['input_logo'] ?? null;
-        $this->qr_code_bg_color = $data['qr_code_bg_color'] ?? '#f0f0f0';
+        // $this->qr_code_bg_color = $data['qr_code_bg_color'] ?? '#f0f0f0';
         
         //  $this->qr_style  = $this->validateStyle($data['qr_style'] ?? 'square');
-         // $this->size     = absint($size);
-         // $this->margin   = absint($margin);
+        //  $this->size     = absint($size);
+        //  $this->margin   = absint($margin);
+        // $this->qrCodeSize     = absint($qrCodeSize);
+        //  $this->margin   = absint($margin);
         //  $this->format   = $this->validateFormat($_POST['format'] ?? 'svg');
-         $this->logo_path = $_POST['input_logo'] ? $this->validateLogo('input_logo') : null;
+        //  $this->logo_path = $_POST['input_logo'] ? $this->validateLogo('input_logo') : null;
          $this->circleRadius = (float) $_POST['circleRadius'] ?? 0.5;
          $this->draw_circular_modules = $_POST['drawCircularModules'] == 1 ? true : false;
-        //  echo 'dataLight'.$data['dataLight'];
-        //  print_r($this->hexToRgb($data['dataLight']));
-        //  $this->background_color = $this->validateColor($data['background_color'] ?? '#000000');
-        // $this->background_color = $this->$_POST['background_color']; 
+         $this->qr_code_logo = $_POST['qr_code_logo'] ?? null;        
      }
  
-     private function validateColor(string $color): array {
-         if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $color)) {
-             throw new InvalidArgumentException('Invalid color format');
-         }
-         return $this->hexToRgb($color);
-     }
+    //  private function validateColor(string $color): array {
+    //      if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $color)) {
+    //          throw new InvalidArgumentException('Invalid color format');
+    //      }
+    //      return $this->hexToRgb($color);
+    //  }
 
 //      private function getOutputType(): string {
 //       switch($this->format){
@@ -72,48 +73,48 @@ if (!class_exists('FlexQr_QRCode')) {
 //          }
 //    }
  
-     private function hexToRgb(string $hex): array {
-        // echo 'cxvxc'.$this->dataLight;
-         $hex = str_replace('#', '', $hex);
-         $length = strlen($hex);
-         $r = hexdec($length == 3 ? str_repeat(substr($hex, 0, 1), 2) : substr($hex, 0, 2));
-         $g = hexdec($length == 3 ? str_repeat(substr($hex, 1, 1), 2) : substr($hex, 2, 2));
-         $b = hexdec($length == 3 ? str_repeat(substr($hex, 2, 1), 2) : substr($hex, 4, 2));
+    //  private function hexToRgb(string $hex): array {
+    //     // echo 'cxvxc'.$this->dataLight;
+    //      $hex = str_replace('#', '', $hex);
+    //      $length = strlen($hex);
+    //      $r = hexdec($length == 3 ? str_repeat(substr($hex, 0, 1), 2) : substr($hex, 0, 2));
+    //      $g = hexdec($length == 3 ? str_repeat(substr($hex, 1, 1), 2) : substr($hex, 2, 2));
+    //      $b = hexdec($length == 3 ? str_repeat(substr($hex, 2, 1), 2) : substr($hex, 4, 2));
          
-        //  echo 'ytjtyj'.$r;
-         return [$r, $g, $b];
-     }
+    //     //  echo 'ytjtyj'.$r;
+    //      return [$r, $g, $b];
+    //  }
      
  
-     private function validateStyle(string $style): string {
-         $allowed_styles = ['square', 'circle', 'rounded'];
-         if (!in_array($style, $allowed_styles)) {
-             throw new InvalidArgumentException('Invalid QR style');
-         }
-         return $style;
-     }
+    //  private function validateStyle(string $style): string {
+    //      $allowed_styles = ['square', 'circle', 'rounded'];
+    //      if (!in_array($style, $allowed_styles)) {
+    //          throw new InvalidArgumentException('Invalid QR style');
+    //      }
+    //      return $style;
+    //  }
  
-     private function validateFormat(string $format): string {
-         $allowed_formats = ['png', 'jpg', 'svg', 'pdf', 'eps'];
-         $format = strtolower($format);
-         if (!in_array($format, $allowed_formats)) {
-             throw new InvalidArgumentException('Invalid file format');
-         }
-         return $format;
-     }
+    //  private function validateFormat(string $format): string {
+    //      $allowed_formats = ['png', 'jpg', 'svg', 'pdf', 'eps'];
+    //      $format = strtolower($format);
+    //      if (!in_array($format, $allowed_formats)) {
+    //          throw new InvalidArgumentException('Invalid file format');
+    //      }
+    //      return $format;
+    //  }
  
-     private function validateLogo(string $path): string {
-         if (!file_exists($path)) {
-             throw new InvalidArgumentException('Logo file not found');
-         }
+    //  private function validateLogo(string $path): string {
+    //      if (!file_exists($path)) {
+    //          throw new InvalidArgumentException('Logo file not found');
+    //      }
          
-         $mime = mime_content_type($path);
-         if (!in_array($mime, ['image/png', 'image/jpeg'])) {
-             throw new InvalidArgumentException('Invalid logo format. Only PNG and JPG allowed');
-         }
+    //      $mime = mime_content_type($path);
+    //      if (!in_array($mime, ['image/png', 'image/jpeg'])) {
+    //          throw new InvalidArgumentException('Invalid logo format. Only PNG and JPG allowed');
+    //      }
          
-         return $path;
-     }
+    //      return $path;
+    //  }
  
      public function generate() {      
         // Function to prepare options for different formats
@@ -144,7 +145,7 @@ if (!class_exists('FlexQr_QRCode')) {
             // separator
             // QRMatrix::M_SEPARATOR      => $this->dot_color,
             // quietzone
-            QRMatrix::M_QUIETZONE      => $this->qr_code_bg_color, //background_color
+            // QRMatrix::M_QUIETZONE      => $this->qr_code_bg_color, //background_color
             // logo (requires a call to QRMatrix::setLogoSpace()), see QRImageWithLogo
             // QRMatrix::M_LOGO           => '#b105f0',
 
@@ -157,15 +158,16 @@ if (!class_exists('FlexQr_QRCode')) {
             // print_r($colors);
 
         $options = new QROptions;
-
-        $options->version             = 7;
-        $options->eccLevel            = EccLevel::L;
+        // print_r($this->version);
+        $options->version             = 5;
+        // ecc level H is required for logo space
+        $options->eccLevel            = EccLevel::H;
         // $options->imageBase64          = true;
         // $options->addLogoSpace          = true;
-        // $options->logoSpaceHeight      = 17;
-        // $options->logoSpaceWidth        = 17;
+        // $options->logoSpaceHeight      = 13;
+        // $options->logoSpaceWidth        = 13;
        
-        $options->scale               = 10;
+        $options->scale               = 6;
         $options->outputBase64        = true;
         // $options->readerUseImagickIfAvailable = true;
         // $options->readerIncreaseContrast      = true;
@@ -175,14 +177,14 @@ if (!class_exists('FlexQr_QRCode')) {
         #$options->transparencyColor   = [233, 233, 233];
         $options->drawCircularModules = $this->draw_circular_modules;
         $options->drawLightModules    = true;
-        $options->circleRadius        = $this->circleRadius;
+        $options->circleRadius        = $this->circleRadius; //works only when draw_circular_modules is true
         // $options->outputType          = QRCode::OUTPUT_MARKUP_SVG;
         // $options->keepAsSquare        = [
         //     QRMatrix::M_FINDER_DARK,
         //     QRMatrix::M_FINDER_DOT,
         //     QRMatrix::M_ALIGNMENT_DARK,
         // ];
-        $options->connectPaths        = false; // color is not working if we set this to false
+        $options->connectPaths        = false; // eye color is not working if we set this to true
         // $options->svgOpacity          = 1.0;
         // $options->svgDefs             = '
         //     <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
@@ -195,35 +197,41 @@ if (!class_exists('FlexQr_QRCode')) {
         $options->moduleValues        = $colors;        
 
         //Determine the output interface based on the selected format
-        switch ($this->format) {
-            case 'svg':
-                $outputInterface = QRMarkupSVG::class;
-                $contentType = 'image/svg+xml';
-                break;
-            case 'png':
-                $outputInterface = QRGdImagePNG::class;
-                $contentType = 'image/png';
-                break;
-            case 'jpeg':
-                $outputInterface = QRGdImageJPEG::class;
-                $contentType = 'image/jpeg';
-                break;
-            case 'eps':
-                $outputInterface = QREps::class;
-                $contentType = 'application/postscript';
-                break;
-            case 'xml':
-                $outputInterface = QRMarkupXML::class;
-                $contentType = 'application/xml';
-                break;
+        // switch ($this->format) {
+        //     case 'svg':
+        //         $outputInterface = QRMarkupSVG::class;
+        //         $contentType = 'image/svg+xml';
+        //         break;
+        //     case 'png':
+        //         $outputInterface = QRGdImagePNG::class;
+        //         $contentType = 'image/png';
+        //         break;
+        //     case 'jpeg':
+        //         $outputInterface = QRGdImageJPEG::class;
+        //         $contentType = 'image/jpeg';
+        //         break;
+        //     case 'eps':
+        //         $outputInterface = QREps::class;
+        //         $contentType = 'application/postscript';
+        //         break;
+            // case 'xml':
+            //     $outputInterface = QRMarkupXML::class;
+            //     $contentType = 'application/xml';
+            //     break;
           
-        }
-        $options->outputInterface     = $outputInterface;
-        $options->contentType = $contentType;
+        // }
+        // $options->outputInterface     = $outputInterface;
+        // $options->contentType = $contentType;
+
+        
         
         // Generate the QR Code
         $qrOut = (new QRCode($options))->render($this->qr_text);
-        // header('Content-type: image/png');
+
+        // $qrOutputInterface = new QRImageWithLogo($options, $qrOut->getQRMatrix());
+        // $qrOutputInterface = (new QRImageWithLogo($options))->render($this->qr_text);
+
+        header('Content-type: image/png');
 
         // if(PHP_SAPI !== 'cli'){
         //     // if viewed in the browser, we should push it as file download as EPS isn't usually supported
@@ -235,15 +243,21 @@ if (!class_exists('FlexQr_QRCode')) {
 
         return $qrOut;
 
+        // dump the output, with an additional logo
+        // the logo could also be supplied via the options, see the svgWithLogo example
+        // $out = $qrOutputInterface->dump(null, __DIR__.'/octocat.png');
+
+        // return $out;
+
         // Path to save the final image with logo
-        $outputPath = __DIR__ . '/qrcode_with_logo.png';
+        // $outputPath = __DIR__ . '/qrcode_with_logo.png';
 
         // Overlay the logo on the PNG QR Code if a logo is uploaded and the format is PNG
-        if ($qr_code_format === 'png' && isset($_FILES['logo']) && $_FILES['logo']['error'] == UPLOAD_ERR_OK) {
-            $logoPath = $_FILES['logo']['tmp_name'];
-            overlayLogo($qrOut, $logoPath, $outputPath);
-            $qrOut = file_get_contents($outputPath);
-        }
+        // if ($qr_code_format === 'png' && isset($_FILES['logo']) && $_FILES['logo']['error'] == UPLOAD_ERR_OK) {
+        //     $logoPath = $_FILES['logo']['tmp_name'];
+        //     overlayLogo($qrOut, $logoPath, $outputPath);
+        //     $qrOut = file_get_contents($outputPath);
+        // }
 
         
         //   private function addLogoOverlay(string $qrData): string {
@@ -267,16 +281,16 @@ if (!class_exists('FlexQr_QRCode')) {
 
     //  echo $qrOut;
  
-     public function saveToFile(string $path): string {
-         $data = $this->generate($this->qr_text);
-         $ext = $this->format === 'jpg' ? 'jpeg' : $this->format;
-         $filename = sanitize_file_name(md5(uniqid().$this->qr_text).'.'.$ext);
-         $fullpath = trailingslashit($path).$filename;
+    //  public function saveToFile(string $path): string {
+    //      $data = $this->generate($this->qr_text);
+    //      $ext = $this->format === 'jpg' ? 'jpeg' : $this->format;
+    //      $filename = sanitize_file_name(md5(uniqid().$this->qr_text).'.'.$ext);
+    //      $fullpath = trailingslashit($path).$filename;
  
-         file_put_contents($fullpath, $data);
+    //      file_put_contents($fullpath, $data);
  
-         return $fullpath;
-     }
+    //      return $fullpath;
+    //  }
 
      
     public function generate_qr_code($qr_only=false) {
@@ -298,9 +312,9 @@ if (!class_exists('FlexQr_QRCode')) {
             return $this->generate();
           }
           
-          $filepath = $qrCodeGenerator->saveToFile($uploads['path']);
-          $url = $uploads['url'] . '/' . basename($filepath);
-          echo "<img src='".$url . "' />";
+        //   $filepath = $qrCodeGenerator->saveToFile($uploads['path']);
+        //   $url = $uploads['url'] . '/' . basename($filepath);
+        //   echo "<img src='".$url . "' />";
             // default output is a base64 encoded data URI
             // printf('<img src="%s" alt="QR Code" />', $qrcode);
             
@@ -323,13 +337,66 @@ if (!class_exists('FlexQr_QRCode')) {
             //     '%s'
             //   )
             // );
-            if ($result == 1 && $qr_code_format != 'eps') {
-             echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
-             echo '<img src="' . esc_url($qr_code_url) . '" alt="QR code">';
-            } else if ($result == 1 && $qr_code_format == 'eps') {
-              echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
-              echo '<p>'.esc_html_e("No Preview for eps file. Please download it from the below table.", "flex-qr-code-generator").'</p>';
-            }
+            // if ($result == 1 && $qr_code_format != 'eps') {
+            //  echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
+            //  echo '<img src="' . esc_url($qr_code_url) . '" alt="QR code">';
+            // } else if ($result == 1 && $qr_code_format == 'eps') {
+            //   echo '<p>'.esc_html_e("Your QR code has been generated:", "flex-qr-code-generator").'</p>';
+            //   echo '<p>'.esc_html_e("No Preview for eps file. Please download it from the below table.", "flex-qr-code-generator").'</p>';
+            // }
           }
         }     
+    }
+
+    class QRImageWithLogo extends QRGdImagePNG{
+
+        /**
+         * @throws \chillerlan\QRCode\Output\QRCodeOutputException
+         */
+        public function dump(string|null $file = null, string|null $logo = null):string{
+            $logo ??= '';
+    
+            // set returnResource to true to skip further processing for now
+            $this->options->returnResource = true;
+    
+            // of course, you could accept other formats too (such as resource or Imagick)
+            // I'm not checking for the file type either for simplicity reasons (assuming PNG)
+            if(!is_file($logo) || !is_readable($logo)){
+                throw new QRCodeOutputException('invalid logo');
+            }
+    
+            // there's no need to save the result of dump() into $this->image here
+            parent::dump($file);
+    
+            $im = imagecreatefrompng($logo);
+    
+            if($im === false){
+                throw new QRCodeOutputException('imagecreatefrompng() error');
+            }
+    
+            // get logo image size
+            $w = imagesx($im);
+            $h = imagesy($im);
+    
+            // set new logo size, leave a border of 1 module (no proportional resize/centering)
+            $lw = (($this->options->logoSpaceWidth - 2) * $this->options->scale);
+            $lh = (($this->options->logoSpaceHeight - 2) * $this->options->scale);
+    
+            // get the qrcode size
+            $ql = ($this->matrix->getSize() * $this->options->scale);
+    
+            // scale the logo and copy it over. done!
+            imagecopyresampled($this->image, $im, (($ql - $lw) / 2), (($ql - $lh) / 2), 0, 0, $lw, $lh, $w, $h);
+    
+            $imageData = $this->dumpImage();
+    
+            $this->saveToFile($imageData, $file);
+    
+            if($this->options->outputBase64){
+                $imageData = $this->toBase64DataURI($imageData);
+            }
+    
+            return $imageData;
+        }
+    
     }

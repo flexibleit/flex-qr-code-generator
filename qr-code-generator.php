@@ -100,8 +100,7 @@ class FlexQrCodeGenerator {
     }
    }
 
-   function qr_code_generator_ajax() {
-    
+   function qr_code_generator_ajax() {    
     
     if ( isset( $_POST['qr_code_text'] ) ) {
       // echo json_encode($_POST);exit;
@@ -137,7 +136,6 @@ class FlexQrCodeGenerator {
     }
     wp_die();
   }
-
 
 }
 
