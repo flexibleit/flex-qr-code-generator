@@ -7,7 +7,7 @@ const CreateQrForm = () => {
     const [eyeColor, setEyeColor] = useState('#2563eb');
     const [dotColor, setDotColor] = useState('#25eb3c');
     const [circleRadius, setCircleRadius] = useState(0.5);
-    // const [version, setVersion] = useState(7);
+    const [version, setVersion] = useState(7);
     // const [qrCodeFormat, setQrCodeFormat] = useState('png');
     const [qrCodeMargin, setQrCodeMargin] = useState('100');
     const [selectedInput, setSelectedInput] = useState('');
@@ -34,7 +34,7 @@ const CreateQrForm = () => {
         formData.append("eye_color", eyeColor);
         formData.append("dot_color", dotColor);
         formData.append("circleRadius", circleRadius);
-        // formData.append("version", version);
+        formData.append("version", version);
         // formData.append("qr_code_format", qrCodeFormat);
         formData.append("qr_code_margin", qrCodeMargin);
         formData.append("qr_code_input", selectedInput);
@@ -107,15 +107,17 @@ const CreateQrForm = () => {
                                 </div>
                             </div>
                             <div className="my-4 flex gap-2">
-                                {/* <div>
+                                <div>
                                     <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">QR Code Version:</label>
                                     <select id="version" name="version" value={version} onChange={(e) => setVersion(e.target.value)} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
                                     <option value="7">7</option>
                                     <option value="8">8</option>
                                     <option value="9">9</option>
                                     <option value="10">10</option>
                                     </select>
-                                </div>                             */}
+                                </div>                            
                                 <div>                                
                                     <label for="number-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Circle Radius (0.5 to 0.75):</label>
                                     <input type="number" id="circleRadius" name="circleRadius" min="0.5" max="0.75" step="0.05" value={circleRadius} onChange={(e) => setCircleRadius(e.target.value)} aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
