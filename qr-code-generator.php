@@ -103,22 +103,6 @@ class FlexQrCodeGenerator {
    function qr_code_generator_ajax() {    
     
     if ( isset( $_POST['qr_code_text'] ) ) {
-      // echo json_encode($_POST);exit;
-      // $qr_code_text = flexqr_valid_input( $_POST['qr_code_text'] );
-      // $qr_code_color = flexqr_valid_input( $_POST['qr_code_color']);
-      // $qr_code_options='';
-      // if (!empty($qr_code_color )) {
-      //   list($r, $g, $b) = sscanf($qr_code_color, "#%02x%02x%02x");
-      //   $qr_code_options.= '&color='.$r.'-'. $g.'-'. $b;
-      // }
-      // $qr_code_format = flexqr_valid_input( $_POST['qr_code_format'] );
-      // if (!empty($qr_code_format)) $qr_code_options.= '&format='.$qr_code_format;
-      // $qr_code_size =  flexqr_valid_input($_POST['qr_code_size'], true);
-      // if (!empty($qr_code_size)) $qr_code_options.= '&size='.$qr_code_size;
-      // $qr_code_margin =  flexqr_valid_input($_POST['qr_code_margin'], true);
-      // if (!empty($qr_code_margin)) $qr_code_options.= '&margin='.$qr_code_margin;
-  
-      // $qrCode = $qrCodeGenerator->generateQRCode();
       $uploads = wp_upload_dir();
       
       if (!empty($_FILES['input_logo']['tmp_name'])) {
@@ -126,9 +110,11 @@ class FlexQrCodeGenerator {
           
       }
        $qrCodeGenerator = new FlexQr_QRCode();
-      $qr_code_format = $qrCodeGenerator->generate(true);
+      list($qr_code, $logo) = $qrCodeGenerator->generate(true);
         $response = [
-          'qrCode' => $qr_code_format,
+          'qrCode' => $qr_code,
+          'logo' => $logo
+
       ];
   
       header('Content-Type: application/json');
