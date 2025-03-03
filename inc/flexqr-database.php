@@ -18,8 +18,25 @@ if (!function_exists('flexqr_alter_code_generator_table')) {
                 ADD COLUMN qr_data TEXT DEFAULT NULL";                
         $wpdb->query($sql);        
       }
+      $column = $wpdb->get_results("SHOW COLUMNS FROM `$table_name` LIKE 'qr_code_url'");      
+      if (!empty($column)) {
+        $sql = "ALTER TABLE $table_name 
+                UPDATE COLUMN qr_code_url VARCHAR DEFAULT NULL";                
+        $wpdb->query($sql);        
+      }
+      $column = $wpdb->get_results("SHOW COLUMNS FROM `$table_name` LIKE 'created_at'");      
+      if (empty($column)) {
+        $sql = "ALTER TABLE $table_name 
+                ADD COLUMN created_at DATETIME DEFAULT NULL";                
+        $wpdb->query($sql);        
+      }
+      $column = $wpdb->get_results("SHOW COLUMNS FROM `$table_name` LIKE 'logo_url'");      
+      if (empty($column)) {
+        $sql = "ALTER TABLE $table_name 
+                ADD COLUMN logo_url VARCHAR DEFAULT NULL";   
     }
   }
+}
   
   // Hook the function to run when the plugin is updated
   add_action('plugins_loaded', 'flexqr_alter_code_generator_table');

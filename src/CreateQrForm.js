@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const CreateQrForm = () => {
 
@@ -13,8 +14,12 @@ const CreateQrForm = () => {
     const [selectedInput, setSelectedInput] = useState('');
     const [drawCircularModules, setDrawCircularModules] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isQrGenerated, setIsQrGenerated] = useState(false);
+    const [isQrSaved, setIsQrSaved] = useState(false);
+    //const [qrUrl, setQrUrl] = useState("");
     const [qrCodeOutput, setQrCodeOutput] = useState(null);
     const [file, setFile] = useState(null);
+    const [logoUrlPath, setLogoUrlPath] = useState(null);
 
     function handleFileChange(e) {
         if (e.target.files) {
@@ -22,11 +27,17 @@ const CreateQrForm = () => {
         }
     }
     
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event,storeData=false) => {
         event.preventDefault();        
         // return;
         // Set loading state
         setIsLoading(true);
+        // Simulate QR code generation
+        setTimeout(() => {
+            setIsLoading(false);
+            setIsQrSaved(true);
+            setIsQrGenerated(true); // Mark QR as generated
+        }, 2000);
 
         const formData = new FormData();
         formData.append("qr_code_text", qrCodeText);
@@ -42,6 +53,13 @@ const CreateQrForm = () => {
         formData.append("qr_code_logo", file);
         formData.append("action", 'flexqr_generate_qr');
 
+        if(storeData){
+            formData.append("qr_code_logo_path", logoUrlPath);
+            formData.append("store_data", true);
+        }else{
+            formData.append("store_data",false);
+        }
+
         try {
             // Make the AJAX request
             const response = await fetch(ajaxurl, {
@@ -54,6 +72,10 @@ const CreateQrForm = () => {
                 const result = await response.json(); // Assuming the response is in JSON
                 console.log("result", result);
                 setQrCodeOutput(result.qrCode); // Set the generated QR code image URL
+                if(result.logo){
+                    setLogoUrlPath(result.logo);
+                }
+
             } else {
                 console.error("Error generating QR code");
             }
@@ -62,6 +84,20 @@ const CreateQrForm = () => {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleSaveQr = () => {
+        if (!isQrSaved) return;
+
+        // Your QR download logic goes here (e.g., converting canvas to an image)
+        alert("Saving QR Code...");
+    };
+
+    const handleDownloadQr = () => {
+        if (!isQrGenerated) return;
+
+        // Your QR download logic goes here (e.g., converting canvas to an image)
+        alert("Downloading QR Code...");
     };
 
     return(
@@ -166,10 +202,22 @@ const CreateQrForm = () => {
                                     <input onChange={handleFileChange} class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="qr_code_logo" type="file"/>
                                 </div>
                             </div>
-                            <div className="my-4">  
+                            <div className="my-4 flex gap-2">  
+                                <div>
                                 <input type="submit" className="button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800" 
-                                    value={isLoading ? 'Generating...' : 'Generate QR Code'} disabled={isLoading} // Disable submit button while loading 
+                                    onClick={handleSubmit} value={isLoading ? 'Generating...' : 'Generate'} disabled={isLoading} // Disable submit button while loading 
                                 />
+                                </div>
+                                <div>
+                                <input type="submit" className="button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800" 
+                                    onClick={(e) => handleSubmit(e,true)} value={isLoading ? 'Saving...' : 'Save'} disabled={!isQrSaved} // Disable submit button while loading 
+                                />
+                                </div>
+                                <div>
+                                <input type="submit" className="button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800" 
+                                    onClick={handleDownloadQr} value={isLoading ? 'Downloading...' : 'Download'} disabled={!isQrGenerated} // Disable submit button while loading 
+                                />
+                                </div>
                             </div>                    
                         </form>
                     </div>

@@ -15,6 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
+
 const CreateQrForm = () => {
   const [qrCodeText, setQrCodeText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [qrCodeSize, setQrCodeSize] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('150');
@@ -27,18 +28,28 @@ const CreateQrForm = () => {
   const [selectedInput, setSelectedInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [drawCircularModules, setDrawCircularModules] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [isQrGenerated, setIsQrGenerated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [isQrSaved, setIsQrSaved] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  //const [qrUrl, setQrUrl] = useState("");
   const [qrCodeOutput, setQrCodeOutput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [file, setFile] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [logoUrlPath, setLogoUrlPath] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   function handleFileChange(e) {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
   }
-  const handleSubmit = async event => {
+  const handleSubmit = async (event, storeData = false) => {
     event.preventDefault();
     // return;
     // Set loading state
     setIsLoading(true);
+    // Simulate QR code generation
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsQrSaved(true);
+      setIsQrGenerated(true); // Mark QR as generated
+    }, 2000);
     const formData = new FormData();
     formData.append("qr_code_text", qrCodeText);
     formData.append("qr_code_size", qrCodeSize);
@@ -52,6 +63,12 @@ const CreateQrForm = () => {
     formData.append("drawCircularModules", drawCircularModules ? 1 : 0);
     formData.append("qr_code_logo", file);
     formData.append("action", 'flexqr_generate_qr');
+    if (storeData) {
+      formData.append("qr_code_logo_path", logoUrlPath);
+      formData.append("store_data", true);
+    } else {
+      formData.append("store_data", false);
+    }
     try {
       // Make the AJAX request
       const response = await fetch(ajaxurl, {
@@ -64,6 +81,9 @@ const CreateQrForm = () => {
         const result = await response.json(); // Assuming the response is in JSON
         console.log("result", result);
         setQrCodeOutput(result.qrCode); // Set the generated QR code image URL
+        if (result.logo) {
+          setLogoUrlPath(result.logo);
+        }
       } else {
         console.error("Error generating QR code");
       }
@@ -72,6 +92,18 @@ const CreateQrForm = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+  const handleSaveQr = () => {
+    if (!isQrSaved) return;
+
+    // Your QR download logic goes here (e.g., converting canvas to an image)
+    alert("Saving QR Code...");
+  };
+  const handleDownloadQr = () => {
+    if (!isQrGenerated) return;
+
+    // Your QR download logic goes here (e.g., converting canvas to an image)
+    alert("Downloading QR Code...");
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex-qr-code-form",
@@ -302,13 +334,26 @@ const CreateQrForm = () => {
     id: "qr_code_logo",
     type: "file"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "my-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    className: "my-4 flex gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "submit",
     className: "button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800",
-    value: isLoading ? 'Generating...' : 'Generate QR Code',
+    onClick: handleSubmit,
+    value: isLoading ? 'Generating...' : 'Generate',
     disabled: isLoading // Disable submit button while loading 
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "submit",
+    className: "button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800",
+    onClick: e => handleSubmit(e, true),
+    value: isLoading ? 'Saving...' : 'Save',
+    disabled: !isQrSaved // Disable submit button while loading 
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "submit",
+    className: "button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800",
+    onClick: handleDownloadQr,
+    value: isLoading ? 'Downloading...' : 'Download',
+    disabled: !isQrGenerated // Disable submit button while loading 
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "w-1/3"
   }, qrCodeOutput && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "qrCodeOutput"
