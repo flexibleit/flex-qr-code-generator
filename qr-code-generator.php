@@ -26,7 +26,6 @@ class FlexQrCodeGenerator {
     add_action('init', array($this, 'flexqr_includes'));
     add_action( 'admin_enqueue_scripts', [$this, 'flexqr_code_generator_scripts'] );
     add_action( 'admin_menu', [$this, 'flexqr_code_generator_menu'] );
-    register_activation_hook( __FILE__, [$this, 'flexqr_activate_code_generator_plugin'] );
 
     add_action('wp_ajax_flexqr_generate_qr', [$this, 'qr_code_generator_ajax']);
     add_action('wp_ajax_nopriv_flexqr_generate_qr', [$this, 'qr_code_generator_ajax']);
@@ -42,12 +41,13 @@ class FlexQrCodeGenerator {
     include "inc/flexqr-track.php";
     include "views/flexqr-create-form.php";
    
-    // Alter database
-    include "inc/flexqr-database.php";
+    
   }
 
   function flexqr_code_generator_activate() {
     // Code to run when plugin is activated
+    // Alter database
+    include FLEXQR_CODE_GENERATOR_PATH."inc/classes/class-flexqr-database.php";
   }
 
   function flexqr_code_generator_deactivate() {
@@ -79,26 +79,6 @@ class FlexQrCodeGenerator {
     // add_action( "admin_print_styles-{$page}", 'flexqr_code_generator_scripts' );
   }
 
-  public function flexqr_activate_code_generator_plugin() {
-    global $wpdb;
-  
-    $table_name = $wpdb->prefix . 'qr_codes';
-  
-    // Check if the table already exists
-    if($wpdb->get_var("show tables like '$table_name'") != $table_name) {
-      // Table doesn't exist, so create it
-      $charset_collate = $wpdb->get_charset_collate();
-      $sql = "CREATE TABLE $table_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        text text NOT NULL,
-        qr_code_url varchar(355) DEFAULT '' NOT NULL,
-        PRIMARY KEY  (id)
-      ) $charset_collate;";
-       
-      require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-      dbDelta( $sql );
-    }
-   }
 
    function qr_code_generator_ajax() {    
     
