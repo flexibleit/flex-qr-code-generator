@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 const CreateQrForm = () => {
 
@@ -64,19 +64,31 @@ const CreateQrForm = () => {
             // Make the AJAX request
             const response = await fetch(ajaxurl, {
                 method: 'POST',
-                body: formData,
+                body: formData,                
             });
+            // console.log("Hello");
 
             // Handle response
             if (response.ok) {
+                // console.log("Hello");
                 const result = await response.json(); // Assuming the response is in JSON
                 console.log("result", result);
+            // Ensure response is valid before parsing
+            // const text = await response.text();  // Get raw response
+            // console.log("Raw response:", text);
+
+            // if (!text) {
+            //     throw new Error("Empty response from server");
+            // }
+
+            // // Try parsing JSON
+            // const result = JSON.parse(text);
+            // console.log("Parsed result:", result);
                 setQrCodeOutput(result.qrCode); // Set the generated QR code image URL
                 if(result.logo){
                     setLogoUrlPath(result.logo);
-                }
-
-            } else {
+                }                
+        } else {
                 console.error("Error generating QR code");
             }
         } catch (error) {

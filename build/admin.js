@@ -15,6 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
+// import axios from "axios";
 
 const CreateQrForm = () => {
   const [qrCodeText, setQrCodeText] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
@@ -75,11 +76,24 @@ const CreateQrForm = () => {
         method: 'POST',
         body: formData
       });
+      // console.log("Hello");
 
       // Handle response
       if (response.ok) {
+        // console.log("Hello");
         const result = await response.json(); // Assuming the response is in JSON
         console.log("result", result);
+        // Ensure response is valid before parsing
+        // const text = await response.text();  // Get raw response
+        // console.log("Raw response:", text);
+
+        // if (!text) {
+        //     throw new Error("Empty response from server");
+        // }
+
+        // // Try parsing JSON
+        // const result = JSON.parse(text);
+        // console.log("Parsed result:", result);
         setQrCodeOutput(result.qrCode); // Set the generated QR code image URL
         if (result.logo) {
           setLogoUrlPath(result.logo);
