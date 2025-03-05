@@ -31,6 +31,7 @@ const CreateQrForm = () => {
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [isQrGenerated, setIsQrGenerated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [isQrSaved, setIsQrSaved] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [isDownloaded, setIsDownloaded] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   //const [qrUrl, setQrUrl] = useState("");
   const [qrCodeOutput, setQrCodeOutput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [file, setFile] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
@@ -48,9 +49,8 @@ const CreateQrForm = () => {
     // Simulate QR code generation
     setTimeout(() => {
       setIsLoading(false);
-      setIsQrSaved(true);
       setIsQrGenerated(true); // Mark QR as generated
-    }, 2000);
+    }, 20);
     const formData = new FormData();
     formData.append("qr_code_text", qrCodeText);
     formData.append("qr_code_size", qrCodeSize);
@@ -64,12 +64,7 @@ const CreateQrForm = () => {
     formData.append("drawCircularModules", drawCircularModules ? 1 : 0);
     formData.append("qr_code_logo", file);
     formData.append("action", 'flexqr_generate_qr');
-    if (storeData) {
-      formData.append("qr_code_logo_path", logoUrlPath);
-      formData.append("store_data", 1);
-    } else {
-      formData.append("store_data", 0);
-    }
+    formData.append("store_data", storeData ? 1 : 0);
     try {
       // Make the AJAX request
       const response = await fetch(ajaxurl, {
@@ -83,20 +78,13 @@ const CreateQrForm = () => {
         // console.log("Hello");
         const result = await response.json(); // Assuming the response is in JSON
         console.log("result", result);
-        // Ensure response is valid before parsing
-        // const text = await response.text();  // Get raw response
-        // console.log("Raw response:", text);
-
-        // if (!text) {
-        //     throw new Error("Empty response from server");
-        // }
-
-        // // Try parsing JSON
-        // const result = JSON.parse(text);
-        // console.log("Parsed result:", result);
         setQrCodeOutput(result.qrCode); // Set the generated QR code image URL
         if (result.logo) {
           setLogoUrlPath(result.logo);
+        }
+        if (storeData) {
+          setIsQrSaved(true); // Ensure button is disabled after saving
+          console.log("QR Code Saved Successfully");
         }
       } else {
         console.error("Error generating QR code");
@@ -107,17 +95,18 @@ const CreateQrForm = () => {
       setIsLoading(false);
     }
   };
-  const handleSaveQr = () => {
-    if (!isQrSaved) return;
-
-    // Your QR download logic goes here (e.g., converting canvas to an image)
-    alert("Saving QR Code...");
-  };
   const handleDownloadQr = () => {
-    if (!isQrGenerated) return;
-
-    // Your QR download logic goes here (e.g., converting canvas to an image)
-    alert("Downloading QR Code...");
+    if (!qrCodeOutput) {
+      alert("No QR Code available for download.");
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = qrCodeOutput;
+    link.download = "qr_code.png"; // Modify based on user selection
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setIsDownloaded(true);
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex-qr-code-form",
@@ -359,14 +348,14 @@ const CreateQrForm = () => {
     type: "submit",
     className: "button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800",
     onClick: e => handleSubmit(e, true),
-    value: isLoading ? 'Saving...' : 'Save',
-    disabled: !isQrSaved // Disable submit button while loading 
+    value: isQrSaved ? "Saved" : "Save",
+    disabled: !isQrGenerated || isQrSaved // Enable only if QR is generated & not already saved 
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "submit",
     className: "button button-primary inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800",
     onClick: handleDownloadQr,
-    value: isLoading ? 'Downloading...' : 'Download',
-    disabled: !isQrGenerated // Disable submit button while loading 
+    value: isDownloaded ? "Downloaded" : "Download",
+    disabled: !isQrGenerated || isDownloaded // Enable only if QR is generated 
   }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "w-1/3"
   }, qrCodeOutput && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
