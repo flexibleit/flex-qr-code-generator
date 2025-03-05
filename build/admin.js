@@ -66,9 +66,9 @@ const CreateQrForm = () => {
     formData.append("action", 'flexqr_generate_qr');
     if (storeData) {
       formData.append("qr_code_logo_path", logoUrlPath);
-      formData.append("store_data", true);
+      formData.append("store_data", 1);
     } else {
-      formData.append("store_data", false);
+      formData.append("store_data", 0);
     }
     try {
       // Make the AJAX request

@@ -56,9 +56,14 @@ if (!class_exists('FlexQr_Database')) {
         $column = $wpdb->get_results("SHOW COLUMNS FROM $table_name LIKE 'created_at'");      
         if (empty($column)) {
           $sql = "ALTER TABLE $table_name 
-                  ADD COLUMN created_at DATETIME DEFAULT NULL";                
+                  ADD COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP";                
           $wpdb->query($sql);        
-        }
+        }            
+        
+        // $sql = "ALTER TABLE $table_name 
+        //         MODIFY COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP";                
+        // $wpdb->query($sql);        
+        
         $column = $wpdb->get_results("SHOW COLUMNS FROM $table_name LIKE 'logo_url'");    
        
         if (empty($column)) {

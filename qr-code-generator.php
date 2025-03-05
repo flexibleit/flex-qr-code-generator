@@ -82,25 +82,35 @@ class FlexQrCodeGenerator {
 
    function qr_code_generator_ajax() {        
     
-    if(!empty($_POST['qr_code_text']) && $_POST['store_data'] == true){
+    if(!empty($_POST['qr_code_text']) && $_POST['store_data'] == 1){
       // Store the QR code in the database
       global $wpdb;
       // if( isset($_POST['qr_code_logo_path'])){
       //   $qr_code_logo_path = $_POST['qr_code_logo_path'];
-      //   echo $qr_code_logo_path;exit;
+        // print_r($_POST);exit;
       // }
       
       // echo 'before inserting'.$_POST['qr_code_logo_path'];exit;
+      $input_data = array(
+        'text' => $_POST['qr_code_text'],
+        'qr_data' => json_encode([
+                      'qr_code_size' => $_POST['qr_code_size'],
+                      'eye_color' => $_POST['eye_color'],
+                      'dot_color' => $_POST['dot_color'],
+                      'circleRadius' => $_POST['circleRadius'],
+                      'version' => $_POST['version'],
+                      'qr_code_margin' => $_POST['qr_code_margin'],
+                      'qr_code_input' => $_POST['qr_code_input'],
+                      'drawCircularModules' => $_POST['drawCircularModules']
+        ])
+      );
+      if(!empty($_POST['qr_code_logo_path']) && $_POST['qr_code_logo_path'] != 'null'){
+        $input_data['logo_url'] = $_POST['qr_code_logo_path'];
+      }
+      
       $result = $wpdb->insert(
         $wpdb->prefix . 'qr_codes',
-        array(
-          'text' => $_POST['qr_code_text'],
-          'qr_code_url' => $_POST['qr_code_logo_path']
-        ),
-        array(
-          '%s',
-          '%s'
-        )
+        $input_data,
       );
     } else if ( isset( $_POST['qr_code_text'] ) ) {
       $uploads = wp_upload_dir();
