@@ -93,6 +93,7 @@ class FlexQrCodeGenerator {
       // echo 'before inserting'.$_POST['qr_code_logo_path'];exit;
       $input_data = array(
         'text' => $_POST['qr_code_text'],
+        'qr_code_url' => $_POST['qr_code_url'],
         'qr_data' => json_encode([
                       'qr_code_size' => $_POST['qr_code_size'],
                       'eye_color' => $_POST['eye_color'],
@@ -101,7 +102,8 @@ class FlexQrCodeGenerator {
                       'version' => $_POST['version'],
                       'qr_code_margin' => $_POST['qr_code_margin'],
                       'qr_code_input' => $_POST['qr_code_input'],
-                      'drawCircularModules' => $_POST['drawCircularModules']
+                      'drawCircularModules' => $_POST['drawCircularModules'],
+                      'qr_code_url' => $_POST['qr_code_url']
         ])
       );
       if(!empty($_POST['qr_code_logo_path']) && $_POST['qr_code_logo_path'] != 'null'){
@@ -117,12 +119,14 @@ class FlexQrCodeGenerator {
       
       if (!empty($_FILES['input_logo']['tmp_name'])) {
           $uploaded_logo = wp_handle_upload($_FILES['input_logo'], ['test_form' => false]);
-          
+          print_r($_FILES['input_logo']);
       }      
       
       $qrCodeGenerator = new FlexQr_QRCode();
-
+    
       header('Content-Type: application/json');
+
+
 
       list($qr_code, $logo) = $qrCodeGenerator->generate(true);
       $response = [
