@@ -139,30 +139,25 @@ if (!class_exists('FlexQr_QRCode')) {
          */
         private function saveUploadedLogo($file)
         {
-            $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
+            $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
             if (!in_array($file['type'], $allowedTypes)) {
-                return null; // Invalid file type
+                throw new QRCodeOutputException('Invalid file type. Only PNG and JPEG are allowed.');
             }
 
-            $upload_dir = wp_upload_dir();
-            $uploads_path = untrailingslashit(wp_normalize_path($upload_dir['path']));
+            $filename = 'logo_' . uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = preg_replace(['/[^a-zA-Z0-9_\.]/', '/\.+/'], ['', '.'], $filename);
+            $filename = str_replace(' ', '_', $filename);
 
-            // Generate filename properly
-            $filename = 'logo_' . uniqid('', true) . '.png';
+            $full_path = WP_CONTENT_DIR . '/uploads/' . $filename;
 
-            // Convert to relative path
-            $relative_path = str_replace(wp_normalize_path(ABSPATH), '', $uploads_path) . '/' . $filename;
+            if (!move_uploaded_file($file['tmp_name'], $full_path)) {
+                throw new QRCodeOutputException('Failed to move the uploaded file.');
+            }
 
-            $tempPath = $uploads_path . '/' . $filename;
-
-            move_uploaded_file($file['tmp_name'], $tempPath);
-
-            // print_r($relative_path); // Now prints a relative path
-            // exit;
-
-            return $relative_path;
+            return $full_path;
         }
+
     }
 }
 
@@ -175,6 +170,8 @@ class QRImageWithLogo extends QRGdImagePNG
     public function dump(string|null $file = null, string|null $logo = null): string
     {
         $logo ??= '';
+
+        // var_dump($logo);
 
         // set returnResource to true to skip further processing for now
         $this->options->returnResource = true;
