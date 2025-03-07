@@ -128,8 +128,12 @@ class FlexQrCodeGenerator
           'qr_code_url' => $_POST['qr_code_url']
         ])
       );
+
       if (!empty($_POST['qr_code_logo_path']) && $_POST['qr_code_logo_path'] != 'null') {
-        $input_data['logo_url'] = $_POST['qr_code_logo_path'];
+        $parts = explode('wp-content', $_POST['qr_code_logo_path']);
+        $lastPart = trim($parts[1], '/');
+        $lastPart = str_replace(['uploads/'], '', $lastPart);
+        $input_data['logo_url'] = $lastPart;
       }
 
       $result = $wpdb->insert(
@@ -192,13 +196,17 @@ class FlexQrCodeGenerator
 
     $id = intval($_POST['id']);
 
-    $fetched_data = $wpdb->get_row($wpdb->prepare("SELECT qr_data FROM $table_name WHERE id = %d", $id));
+    $fetched_data = $wpdb->get_row($wpdb->prepare("SELECT qr_data, logo_url FROM $table_name WHERE id = %d", $id), ARRAY_A);
 
-    $fetched_data_array = get_object_vars($fetched_data);
 
-    $fetched_data_str = implode(" ", $fetched_data_array);
+    $logo_url = WP_CONTENT_DIR . '/uploads/' . $fetched_data['logo_url'];
 
-    $data = json_decode($fetched_data_str, true);
+    // var_dump($logo_url);
+    error_log($logo_url);
+
+    $data = json_decode($fetched_data['qr_data'], true);
+
+    $data['qr_code_logo'] = $logo_url;
 
     $qrCodeGenerator = new FlexQr_QRCode($data);
 

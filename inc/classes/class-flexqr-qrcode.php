@@ -100,6 +100,30 @@ if (!class_exists('FlexQr_QRCode')) {
 
             $options->quietzoneSize = $this->margin;
 
+            // Logo is not in data by contructor
+            if ($this->qr_code_logo !== null) {
+                $logoPath = $this->qr_code_logo;
+
+                error_log($logoPath);
+
+                $options->addLogoSpace = true;
+                $options->logoSpaceWidth = 15; // Adjust logo width
+                $options->logoSpaceHeight = 15; // Adjust logo height
+                $qrImage = (new QRCode($options));
+                $qrImage->addByteSegment($this->qr_text);
+
+                $qrOutputInterface = new QRImageWithLogo($options, $qrImage->getQRMatrix());
+
+                // the logo could also be supplied via the options, see the svgWithLogo example
+                $out = $qrOutputInterface->dump(null, $logoPath);
+
+                // unlink($logoPath); // Remove temporary file
+                header('Content-type: image/png');
+
+                return [$out, $logoPath];
+            }
+
+            // Logo in files
             if (isset($_FILES['qr_code_logo']) && $_FILES['qr_code_logo']['error'] === UPLOAD_ERR_OK) {
                 $logoPath = $this->saveUploadedLogo($_FILES['qr_code_logo']);
                 // print_r($_FILES);exit;
@@ -115,15 +139,14 @@ if (!class_exists('FlexQr_QRCode')) {
 
                     $qrOutputInterface = new QRImageWithLogo($options, $qrImage->getQRMatrix());
 
-                    // the logo could also be supplied via the options, see the svgWithLogo example
                     $out = $qrOutputInterface->dump(null, $logoPath);
 
-                    // unlink($logoPath); // Remove temporary file
                     header('Content-type: image/png');
 
                     return [$out, $logoPath];
                 }
             }
+
             // doesnot work
             if ($fileType === 'eps') {
 
@@ -134,10 +157,10 @@ if (!class_exists('FlexQr_QRCode')) {
                 return [$qrImage, null];
             }
 
+            // without logo
+
             // Generate the QR Code
             $qrImage = (new QRCode($options))->render($this->qr_text);
-
-
 
             header('Content-type: image/png');
 

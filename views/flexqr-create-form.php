@@ -242,15 +242,31 @@ if (!function_exists('flexqr_code_generator_options')) {
         // var_dump($data);
       }
 
-      $base64SVG = str_replace("data:image/svg+xml;base64,", "", $data['data']['qrCode']);
+      $dataUri = $data['data']['qrCode'];
+      $base64Data = preg_replace('/^data:image\/(.*?);base64,/', '', $dataUri);
+      $imageType = preg_match('/^data:image\/(.*?);base64,/', $dataUri, $matches) ? $matches[1] : null;
 
-      $svgContent = base64_decode($base64SVG);
-
-      echo '<td>';
-      echo '<div class="svg-container">';
-      echo $svgContent;
-      echo '</div>';
-      echo '</td>';
+      if ($imageType === 'svg+xml') {
+        // It's an SVG
+        $svgContent = base64_decode($base64Data);
+        echo '<td>';
+        echo '<div class="image-container">';
+        echo $svgContent;
+        echo '</div>';
+        echo '</td>';
+      } elseif ($imageType === 'png') {
+        // It's a PNG or another image type
+        $imageData = base64_decode($base64Data);
+        $imageSrc = 'data:image/png;base64,' . base64_encode($imageData);
+        echo '<td>';
+        echo '<div class="image-container">';
+        echo '<img src="' . $imageSrc . '" alt="QR Code">';
+        echo '</div>';
+        echo '</td>';
+      } else {
+        // Handle unsupported image types or default case
+        echo '<td>Unsupported image type</td>';
+      }
 
 
       // ShortCode Fetching

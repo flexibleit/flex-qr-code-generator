@@ -60,6 +60,7 @@ const CreateQrForm = () => {
 
     formData.append('qr_code_url', `${qrFileName}.${downloadType}`);
     formData.append('qr_code_format', downloadType);
+    formData.append('qr_code_logo_path', logoUrlPath);
 
     try {
       // Make the AJAX request
