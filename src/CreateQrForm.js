@@ -36,7 +36,6 @@ const CreateQrForm = () => {
 
   const handleSubmit = async (event, storeData = false) => {
     event.preventDefault();
-    // return;
     // Set loading state
     setIsLoading(true);
     // Simulate QR code generation
@@ -52,7 +51,6 @@ const CreateQrForm = () => {
     formData.append('dot_color', dotColor);
     formData.append('circleRadius', circleRadius);
     formData.append('version', version);
-    // formData.append("qr_code_format", qrCodeFormat);
     formData.append('qr_code_margin', qrCodeMargin);
     formData.append('qr_code_input', selectedInput);
     formData.append('drawCircularModules', drawCircularModules ? 1 : 0);
@@ -61,6 +59,7 @@ const CreateQrForm = () => {
     formData.append('store_data', storeData ? 1 : 0);
 
     formData.append('qr_code_url', `${qrFileName}.${downloadType}`);
+    formData.append('qr_code_format', downloadType);
 
     try {
       // Make the AJAX request

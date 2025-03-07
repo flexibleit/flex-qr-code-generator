@@ -46,7 +46,7 @@ if (!class_exists('FlexQr_QRCode')) {
 
 
 
-        public function generate()
+        public function generate($fileType = 'svg')
         {
             $colors = [
                     // finder
@@ -125,8 +125,23 @@ if (!class_exists('FlexQr_QRCode')) {
                     return [$out, $logoPath];
                 }
             }
+
+            if ($fileType === 'eps') {
+
+
+                $qrImage = (new QRCode($options))->render($this->qr_text);
+
+
+                header('Content-type: application/postscript');
+
+
+                return [$qrImage, null];
+            }
+
             // Generate the QR Code
             $qrImage = (new QRCode($options))->render($this->qr_text);
+
+
 
             header('Content-type: image/png');
 

@@ -53,7 +53,6 @@ const CreateQrForm = () => {
   }
   const handleSubmit = async (event, storeData = false) => {
     event.preventDefault();
-    // return;
     // Set loading state
     setIsLoading(true);
     // Simulate QR code generation
@@ -68,7 +67,6 @@ const CreateQrForm = () => {
     formData.append('dot_color', dotColor);
     formData.append('circleRadius', circleRadius);
     formData.append('version', version);
-    // formData.append("qr_code_format", qrCodeFormat);
     formData.append('qr_code_margin', qrCodeMargin);
     formData.append('qr_code_input', selectedInput);
     formData.append('drawCircularModules', drawCircularModules ? 1 : 0);
@@ -76,6 +74,7 @@ const CreateQrForm = () => {
     formData.append('action', 'flexqr_generate_qr');
     formData.append('store_data', storeData ? 1 : 0);
     formData.append('qr_code_url', `${qrFileName}.${downloadType}`);
+    formData.append('qr_code_format', downloadType);
     try {
       // Make the AJAX request
       const response = await fetch(ajaxurl, {
@@ -437,7 +436,7 @@ const TypeSelector = ({
   selectedValue,
   setSelectedValue
 }) => {
-  const values = ['svg', 'png', 'jpg', 'pdf'];
+  const values = ['svg', 'png', 'jpg', 'pdf', 'eps'];
   const handleChange = value => {
     setSelectedValue(value);
   };
@@ -500,6 +499,13 @@ async function fileTypeConverter(source, size, format, fileName) {
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 180, 150);
     pdf.save('downloaded-image.pdf');
     return;
+  } else if (format === 'eps') {
+    const link = document.createElement('a');
+    link.href = source;
+    link.download = `${fileName}.eps`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   } else {
     // For PNG or JPEG
     downloadLink.href = canvas.toDataURL(`image/${format}`);

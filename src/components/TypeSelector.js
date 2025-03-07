@@ -1,5 +1,5 @@
 const TypeSelector = ({ selectedValue, setSelectedValue }) => {
-  const values = ['svg', 'png', 'jpg', 'pdf'];
+  const values = ['svg', 'png', 'jpg', 'pdf', 'eps'];
 
   const handleChange = (value) => {
     setSelectedValue(value);

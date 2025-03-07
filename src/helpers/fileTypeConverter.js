@@ -31,6 +31,13 @@ export async function fileTypeConverter(source, size, format, fileName) {
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 180, 150);
     pdf.save('downloaded-image.pdf');
     return;
+  } else if (format === 'eps') {
+    const link = document.createElement('a');
+    link.href = source;
+    link.download = `${fileName}.eps`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   } else {
     // For PNG or JPEG
     downloadLink.href = canvas.toDataURL(`image/${format}`);
