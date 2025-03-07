@@ -118,22 +118,18 @@ if (!class_exists('FlexQr_QRCode')) {
                     // the logo could also be supplied via the options, see the svgWithLogo example
                     $out = $qrOutputInterface->dump(null, $logoPath);
 
-
                     // unlink($logoPath); // Remove temporary file
                     header('Content-type: image/png');
 
                     return [$out, $logoPath];
                 }
             }
-
+            // doesnot work
             if ($fileType === 'eps') {
-
 
                 $qrImage = (new QRCode($options))->render($this->qr_text);
 
-
                 header('Content-type: application/postscript');
-
 
                 return [$qrImage, null];
             }

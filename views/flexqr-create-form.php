@@ -201,7 +201,7 @@ if (!function_exists('flexqr_code_generator_options')) {
       echo '<tr>';
       echo '<td>' . esc_html($qr_code->text) . '</td>';
       echo '<td>' . esc_html($qr_code->tracking) . '</td>';
-      echo '<td>';
+
 
       // if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false ) {
       //   // Check if the URL has an 'eps' extension
@@ -218,12 +218,40 @@ if (!function_exists('flexqr_code_generator_options')) {
 
       // echo '<svg width="300px" src="' . $GLOBALS["out"] . '" alt="QR code" >';
 
-      echo '</td>';
       // if (strpos($qr_code->qr_code_url, 'https://api.qrserver.com') !== false) {
       //     echo '<td>[flexqr_code data-id="' . esc_html($qr_code->id) . '" size="300" bgcolor="#ffffff" padding="5px" margin="5px"]</td>';
       // } else {
       //     echo '<td>[flexqr_code url="' . esc_url($qr_code->qr_code_url) . '" size="155"]</td>';
       // }
+
+
+      // Qr Code Fetching
+      $response = wp_remote_post(admin_url('admin-ajax.php'), [
+        'body' => [
+          'action' => 'flexqr_generate_qr_with_id',
+          'id' => $qr_code->id,
+        ]
+      ]);
+
+      if (is_wp_error($response)) {
+        $error_message = $response->get_error_message();
+        echo "Something went wrong: $error_message";
+      } else {
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        // var_dump($data);
+      }
+
+      $base64SVG = str_replace("data:image/svg+xml;base64,", "", $data['data']['qrCode']);
+
+      $svgContent = base64_decode($base64SVG);
+
+      echo '<td>';
+      echo '<div class="svg-container">';
+      echo $svgContent;
+      echo '</div>';
+      echo '</td>';
+
 
       // ShortCode Fetching
 
@@ -234,10 +262,7 @@ if (!function_exists('flexqr_code_generator_options')) {
         $qr_data_str .= '' . $key . '=' . '"' . $value . '"' . ' ';
       }
 
-      print_r($qr_data);
-
       echo '<td>[flexqr_code data-id="' . esc_html($qr_code->id) . '"' . $qr_data_str . ']</td>';
-
 
       // Extract the ID from the qr_code_url
       $url_components = parse_url($qr_code->qr_code_url);

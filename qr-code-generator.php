@@ -31,6 +31,10 @@ class FlexQrCodeGenerator
     add_action('wp_ajax_flexqr_generate_qr', [$this, 'qr_code_generator_ajax']);
     add_action('wp_ajax_nopriv_flexqr_generate_qr', [$this, 'qr_code_generator_ajax']);
 
+    add_action('wp_ajax_flexqr_generate_qr_with_id', [$this, 'generate_qr_with_id']);
+    add_action('wp_ajax_nopriv_flexqr_generate_qr_with_id', [$this, 'generate_qr_with_id']);
+
+
     // Altering the footer.
     // add_action('admin_init', function () {
     //   add_filter('admin_footer_text', function () {
@@ -112,6 +116,7 @@ class FlexQrCodeGenerator
         'text' => $_POST['qr_code_text'],
         'qr_code_url' => $_POST['qr_code_url'],
         'qr_data' => json_encode([
+          'qr_code_text' => $_POST['qr_code_text'],
           'qr_code_size' => $_POST['qr_code_size'],
           'eye_color' => $_POST['eye_color'],
           'dot_color' => $_POST['dot_color'],
@@ -174,6 +179,37 @@ class FlexQrCodeGenerator
 
     }
     wp_die();
+  }
+
+  function generate_qr_with_id()
+  {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'qr_codes';
+
+    if (!isset($_POST['id'])) {
+      wp_send_json_error(['message' => 'Missing ID parameter'], 400);
+    }
+
+    $id = intval($_POST['id']);
+
+    $fetched_data = $wpdb->get_row($wpdb->prepare("SELECT qr_data FROM $table_name WHERE id = %d", $id));
+
+    $fetched_data_array = get_object_vars($fetched_data);
+
+    $fetched_data_str = implode(" ", $fetched_data_array);
+
+    $data = json_decode($fetched_data_str, true);
+
+    $qrCodeGenerator = new FlexQr_QRCode($data);
+
+    list($qr_code, $logo) = $qrCodeGenerator->generate();
+
+    $response = [
+      'qrCode' => $qr_code,
+      'logo' => $logo,
+    ];
+
+    wp_send_json_success($response);
   }
 
 }
