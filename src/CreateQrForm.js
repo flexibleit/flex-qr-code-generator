@@ -383,18 +383,17 @@ const CreateQrForm = () => {
                   disabled={isLoading}
                 />
                 <div className='flex gap-2 ml-4 items-end'>
-                  {/* File Type Selector */}
-                  <TypeSelector
-                    setSelectedValue={setDownloadType}
-                    selectedValue={downloadType}
-                  />
                   {/* Save Button */}
                   <Button
                     onClick={(e) => handleSubmit(e, true)}
                     value={isQrSaved ? 'Saved' : 'Save'}
                     disabled={!isQrGenerated || isQrSaved}
                   />
-
+                  {/* File Type Selector */}
+                  <TypeSelector
+                    setSelectedValue={setDownloadType}
+                    selectedValue={downloadType}
+                  />
                   {/* Download Button */}
                   <Button
                     onClick={(e) => handleDownloadQr(e)}

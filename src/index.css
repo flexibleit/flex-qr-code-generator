@@ -4,14 +4,20 @@
   @tailwind components;
   @tailwind utilities;
 }
-@media print{
-  #adminmenuback, #wpfooter, #adminmenuwrap{
-      display:none;
+@media print {
+  #adminmenuback,
+  #wpfooter,
+  #adminmenuwrap {
+    display: none;
   }
-  .d-none{
-    display:none !important;
+  .d-none {
+    display: none !important;
   }
 }
-.modal-width{
+.modal-width {
   width: 650px;
+}
+
+#wpfooter {
+  display: none;
 }

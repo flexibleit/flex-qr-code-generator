@@ -30,6 +30,17 @@ class FlexQrCodeGenerator
 
     add_action('wp_ajax_flexqr_generate_qr', [$this, 'qr_code_generator_ajax']);
     add_action('wp_ajax_nopriv_flexqr_generate_qr', [$this, 'qr_code_generator_ajax']);
+
+    // Altering the footer.
+    // add_action('admin_init', function () {
+    //   add_filter('admin_footer_text', function () {
+    //     echo "";
+    //   }, 11);
+    //   add_filter('update_footer', function () {
+    //     echo "";
+    //   }, 11);
+    // });
+
   }
 
   public function flexqr_includes()
@@ -107,7 +118,7 @@ class FlexQrCodeGenerator
           'circleRadius' => $_POST['circleRadius'],
           'version' => $_POST['version'],
           'qr_code_margin' => $_POST['qr_code_margin'],
-          'qr_code_input' => $_POST['qr_code_input'],
+          // 'qr_code_input' => $_POST['qr_code_input'],
           'drawCircularModules' => $_POST['drawCircularModules'],
           'qr_code_url' => $_POST['qr_code_url']
         ])
